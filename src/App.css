@@ -31,3 +31,16 @@
     transform: rotate(360deg);
   }
 }
+
+.color-picker .selector {
+  width: 70%;
+  height: 70%;
+  top: 15%;
+  left: 15%;
+  box-shadow: none;
+}
+
+.color-picker .selector:hover,
+.color-picker .selector:focus {
+  box-shadow: none;
+}

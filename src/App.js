@@ -1,24 +1,31 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
+import ColorPicker from './color-picker/react-color-picker';
+import '@radial-color-picker/react-color-picker/dist/react-color-picker.umd.min.css';
 import './App.css';
 
 class App extends Component {
+  state = {
+    hue: 90,
+    saturation: 100,
+    luminosity: 50,
+    alpha: 1
+  };
+
+  onChange = ({ hue, saturation, luminosity, alpha }) => {
+    this.setState({ hue, saturation, luminosity, alpha });
+  };
+
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
+          <ColorPicker
+            {...this.state}
+            className="app-logo"
+            onChange={this.onChange}
+          />
+          <p>Say Hello</p>
         </header>
       </div>
     );
