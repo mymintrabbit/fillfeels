@@ -1,4 +1,4 @@
-'use strict'
+// 'use strict'
 
 var utils = require('./utils')
 var mapHueToColor = utils.mapHueToColor
@@ -56,7 +56,7 @@ function paintColorWheelToCanvas(canvas, size) {
     ctx.fill()
   }
 
-  for (var i = 30; i < 60; i += 0.5) {
+  for (i = 30; i < 60; i += 0.5) {
     const h = i + 60
     ctx.fillStyle = `hsl(${h}, 50%, 60%)`
     console.log('#2 STYLE:', ctx.fillStyle)
@@ -72,7 +72,7 @@ function paintColorWheelToCanvas(canvas, size) {
     ctx.fill()
   }
 
-  for (var i = 60; i < 90; i += 0.5) {
+  for (i = 60; i < 90; i += 0.5) {
     const h = i + 60
     ctx.fillStyle = `hsl(${h}, 50%, 60%)`
     console.log('#3 STYLE:', ctx.fillStyle)
@@ -88,7 +88,7 @@ function paintColorWheelToCanvas(canvas, size) {
     ctx.fill()
   }
 
-  for (var i = 90; i < 120; i += 0.5) {
+  for (i = 90; i < 120; i += 0.5) {
     const h = i + 60
     const s = 50 + (i - 90) / 3
     const l = 60 - (i - 90) / 3
@@ -106,7 +106,7 @@ function paintColorWheelToCanvas(canvas, size) {
     ctx.fill()
   }
 
-  for (var i = 120; i <= 120; i += 0.5) {
+  for (i = 120; i <= 120; i += 0.5) {
     const h = i + 60
     ctx.fillStyle = `hsl(${h}, 60%, 50%)`
     console.log('#5 STYLE:', ctx.fillStyle)
@@ -122,7 +122,7 @@ function paintColorWheelToCanvas(canvas, size) {
     ctx.fill()
   }
 
-  for (var i = 120; i < 180; i += 0.5) {
+  for (i = 120; i < 180; i += 0.5) {
     const h = i + 60
     const s = 50 + (180 - i) / 6
     const l = 40 + (180 - i) / 6
@@ -140,7 +140,7 @@ function paintColorWheelToCanvas(canvas, size) {
     ctx.fill()
   }
 
-  for (var i = 215; i < 280; i += 0.5) {
+  for (i = 215; i < 280; i += 0.5) {
     const h = 360 + (i - 215) * (-30 / (280 - 215))
     const s = 60 + ((i - 215) * 40) / (280 - 215)
     const l = 50 + ((i - 215) * 30) / (280 - 215)
@@ -160,7 +160,7 @@ function paintColorWheelToCanvas(canvas, size) {
     ctx.fill()
   }
 
-  for (var i = 280; i < 300; i += 0.5) {
+  for (i = 280; i < 300; i += 0.5) {
     const h = 330 + ((i - 280) * 30) / (300 - 280)
     // const s = 100 + (i - 280) * (-40 / (360 - 280))
     const s = 100
@@ -185,7 +185,7 @@ function paintColorWheelToCanvas(canvas, size) {
     ctx.fill()
   }
 
-  for (var i = 300; i < 360; i += 0.5) {
+  for (i = 300; i < 360; i += 0.5) {
     const h = i - 300
     const s = 100 + (i - 300) * (-40 / (360 - 300))
     const l = 80 + (i - 300) * (-20 / (360 - 300))
@@ -727,10 +727,10 @@ var ColorPicker = (function(_React$Component) {
           isKnobIn = _state.isKnobIn,
           isDisabled = _state.isDisabled
         var _props = this.props,
-          hue = _props.hue,
-          saturation = _props.saturation,
-          luminosity = _props.luminosity,
-          alpha = _props.alpha
+          hue = _props.hue
+        //   saturation = _props.saturation,
+        //   luminosity = _props.luminosity,
+        //   alpha = _props.alpha
 
         var paletteClassName = 'palette ' + (isPaletteIn ? 'is-in' : 'is-out')
         var colorSelClassName = 'selector ' + (isPressed ? 'is-pressed' : '')
