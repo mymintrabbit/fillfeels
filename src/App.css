@@ -37,10 +37,10 @@
   height: 70%;
   top: 15%;
   left: 15%;
-  box-shadow: none;
+  box-shadow: none !important;
 }
 
 .color-picker .selector:hover,
 .color-picker .selector:focus {
-  box-shadow: none;
+  box-shadow: none !important;
 }
