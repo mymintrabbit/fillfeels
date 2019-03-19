@@ -119,55 +119,59 @@ export const mapHueToColor = hue => {
     return '#fd8dc0'
   }
 
-  if (inRangeOf(hue, 260, 265)) {
-    return '#ff99cc'
-  }
-
-  if (inRangeOf(hue, 265, 270)) {
-    return '#ff99bd'
+  if (inRangeOf(hue, 260, 270)) {
+    return '#fd8dc0'
   }
 
   if (inRangeOf(hue, 270, 275)) {
-    return '#ff99ab'
+    return '#ff99cc'
   }
 
   if (inRangeOf(hue, 275, 280)) {
-    return '#ff999a'
+    return '#ff99bd'
   }
 
   if (inRangeOf(hue, 280, 285)) {
-    return '#fe9a96'
+    return '#ff99ab'
   }
 
   if (inRangeOf(hue, 285, 290)) {
-    return '#fc9d8e'
+    return '#ff999a'
   }
 
   if (inRangeOf(hue, 290, 295)) {
-    return '#f8a385'
+    return '#fe9a96'
   }
 
   if (inRangeOf(hue, 295, 300)) {
-    return '#f5a97e'
+    return '#fc9d8e'
   }
 
   if (inRangeOf(hue, 300, 305)) {
+    return '#f8a385'
+  }
+
+  if (inRangeOf(hue, 305, 310)) {
+    return '#f5a97e'
+  }
+
+  if (inRangeOf(hue, 310, 320)) {
     return '#f0b176'
   }
 
-  if (inRangeOf(hue, 305, 320)) {
+  if (inRangeOf(hue, 320, 330)) {
     return '#ebba6f'
   }
 
-  if (inRangeOf(hue, 320, 330)) {
+  if (inRangeOf(hue, 330, 340)) {
     return '#e5c369'
   }
 
-  if (inRangeOf(hue, 330, 340)) {
+  if (inRangeOf(hue, 340, 345)) {
     return '#dfcc63'
   }
 
-  if (inRangeOf(hue, 340, 350)) {
+  if (inRangeOf(hue, 345, 350)) {
     return '#d9d35e'
   }
 
