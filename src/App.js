@@ -21,7 +21,7 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <ColorPicker {...this.state} className="app-logo" onChange={this.onChange} />
-          <p>Say Hello</p>
+          <p>Version 1.0</p>
         </header>
       </div>
     )
