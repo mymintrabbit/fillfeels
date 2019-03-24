@@ -60,7 +60,7 @@ class App extends Component {
               </React.Fragment>
             )}
 
-            <p>Version 1.1</p>
+            <p>Version 1.01</p>
           </ButtonWrapper>
         </header>
       </div>
