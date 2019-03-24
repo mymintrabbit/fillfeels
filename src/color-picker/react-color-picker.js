@@ -2,6 +2,7 @@
 
 var utils = require('./utils')
 var mapHueToColor = utils.mapHueToColor
+var getGradient = utils.getGradient
 
 function _interopDefault(ex) {
   return ex && typeof ex === 'object' && 'default' in ex ? ex['default'] : ex
@@ -230,6 +231,8 @@ var getRotationFromCoords = function getRotationFromCoords(_ref, rect) {
 
   var cx = rect.left + rect.width / 2
   var cy = rect.top + rect.height / 2
+
+  // this.setState({ x, y })
 
   return Math.atan2(y - cy, x - cx) * TO_DEGREES
 }
@@ -472,7 +475,7 @@ function styleInject(css, ref) {
 }
 
 var css =
-  ".color-picker {\n  display: block;\n  overflow: hidden;\n  width: 280px;\n  height: 280px;\n  position: relative; }\n  .color-picker:focus {\n    outline: 0; }\n    .color-picker:focus .knob {\n      box-shadow: 0 0 30px rgba(0, 0, 0, 0.38), 0 0 15px rgba(0, 0, 0, 0.48); }\n  .color-picker,\n  .color-picker .palette,\n  .color-picker .rotator,\n  .color-picker .selector,\n  .color-picker .ripple,\n  .color-picker .knob {\n    -webkit-touch-callout: none;\n    -webkit-tap-highlight-color: transparent;\n    user-select: none;\n    box-sizing: border-box; }\n    .color-picker::before,\n    .color-picker .palette::before,\n    .color-picker .rotator::before,\n    .color-picker .selector::before,\n    .color-picker .ripple::before,\n    .color-picker .knob::before {\n      box-sizing: border-box; }\n  .color-picker .palette {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    width: 100%;\n    height: 100%;\n    background-size: 100% 100%;\n    border-radius: 50%;\n    overflow: hidden;\n    will-change: transform, opacity;\n    transition: transform 0.5s cubic-bezier(0.35, 0, 0.25, 1), opacity 0.5s cubic-bezier(0.35, 0, 0.25, 1); }\n    .color-picker .palette::before {\n      content: '';\n      display: block;\n      position: absolute;\n      width: 76%;\n      height: 76%;\n      top: 12%;\n      left: 12%;\n      background-color: #fff;\n      border-radius: 50%; }\n    .color-picker .palette.is-in {\n      transform: scale(1);\n      opacity: 1; }\n    .color-picker .palette.is-out {\n      transform: scale(0);\n      opacity: 0; }\n  .color-picker .rotator {\n    width: 100%;\n    height: 100%;\n    position: absolute; }\n    .color-picker .rotator.dragging {\n      z-index: 1; }\n    .color-picker .rotator.disabled {\n      pointer-events: none; }\n  .color-picker .knob {\n    box-shadow: 0 0 10px rgba(0, 0, 0, 0.12), 0 0 5px rgba(0, 0, 0, 0.16);\n    border-radius: 50%;\n    position: absolute;\n    width: 7%;\n    height: 7%;\n    top: 2.5%;\n    left: 46.5%;\n    background-color: #fff;\n    transition: transform 0.4s cubic-bezier(0.35, 0, 0.25, 1);\n    outline: 0;\n    border-style: none; }\n    .color-picker .knob.is-in {\n      transform: scale(1); }\n    .color-picker .knob.is-out {\n      transform: scale(0); }\n  .color-picker:not(:focus) .knob:hover {\n    box-shadow: 0 0 50px rgba(0, 0, 0, 0.19), 0 0 15px rgba(0, 0, 0, 0.24); }\n  .color-picker .selector {\n    position: absolute;\n    width: 70%;\n    height: 70%;\n    top: 15%;\n    left: 15%;\n    padding: 0;\n    margin: 0;\n    border-radius: 50%;\n    background-color: #ff0000;\n    outline: 0;\n    cursor: pointer;\n    transition: transform 0.7s cubic-bezier(0.35, 0, 0.25, 1);\n    will-change: transform;\n    overflow: visible;\n    border: 6px solid #fff;\n }\n    .color-picker .selector::-moz-focus-inner {\n      border: 0; }\n    .color-picker .selector:hover {\n      box-shadow: 0 0 1px 1px #333; }\n    .color-picker .selector:focus {\n      box-shadow: 0 0 1px 2px #b2b2b2; }\n    .color-picker .selector.is-pressed {\n      animation: color-picker-beat 0.4s cubic-bezier(0.35, 0, 0.25, 1) forwards; }\n  .color-picker .ripple {\n    width: 20%;\n    height: 20%;\n    border-radius: 50%;\n    border: #ff0000 solid 8px;\n    opacity: 0;\n    position: absolute;\n    top: 40%;\n    left: 40%;\n    z-index: -1; }\n  .color-picker .is-rippling {\n    z-index: 0;\n    animation: color-picker-ripple 0.5s cubic-bezier(0.35, 0, 0.25, 1) forwards; }\n\n@keyframes color-picker-ripple {\n  0% {\n    transform: scale(1);\n    opacity: .3; }\n  50% {\n    opacity: .1; }\n  100% {\n    opacity: 0;\n    border-width: 0;\n    transform: scale(3.8); } }\n\n@keyframes color-picker-beat {\n  0% {\n    transform: scale(1); }\n  25% {\n    transform: scale(0.8); }\n  50% {\n    transform: scale(1); }\n  100% {\n    transform: scale(1); } }\n"
+  ".color-picker {\n  display: block;\n  overflow: hidden;\n  width: 280px;\n  height: 280px;\n  position: absolute; }\n  .color-picker:focus {\n    outline: 0; }\n    .color-picker:focus .knob {\n      box-shadow: 0 0 30px rgba(0, 0, 0, 0.38), 0 0 15px rgba(0, 0, 0, 0.48); }\n  .color-picker,\n  .color-picker .palette,\n  .color-picker .rotator,\n  .color-picker .selector,\n  .color-picker .ripple,\n  .color-picker .knob {\n    -webkit-touch-callout: none;\n    -webkit-tap-highlight-color: transparent;\n    user-select: none;\n    box-sizing: border-box; }\n    .color-picker::before,\n    .color-picker .palette::before,\n    .color-picker .rotator::before,\n    .color-picker .selector::before,\n    .color-picker .ripple::before,\n    .color-picker .knob::before {\n      box-sizing: border-box; }\n  .color-picker .palette {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    width: 100%;\n    height: 100%;\n    background-size: 100% 100%;\n    border-radius: 50%;\n    overflow: hidden;\n    will-change: transform, opacity;\n    transition: transform 0.5s cubic-bezier(0.35, 0, 0.25, 1), opacity 0.5s cubic-bezier(0.35, 0, 0.25, 1); }\n    .color-picker .palette::before {\n      content: '';\n      display: block;\n      position: absolute;\n      width: 76%;\n      height: 76%;\n      top: 12%;\n      left: 12%;\n      background-color: #fff;\n      border-radius: 50%; }\n    .color-picker .palette.is-in {\n      transform: scale(1);\n      opacity: 1; }\n    .color-picker .palette.is-out {\n      transform: scale(0);\n      opacity: 0; }\n  .color-picker .rotator {\n    width: 100%;\n    height: 100%;\n    position: absolute; }\n    .color-picker .rotator.dragging {\n      z-index: 1; }\n    .color-picker .rotator.disabled {\n      pointer-events: none; }\n  .color-picker .knob {\n    box-shadow: 0 0 10px rgba(0, 0, 0, 0.12), 0 0 5px rgba(0, 0, 0, 0.16);\n    border-radius: 50%;\n    position: absolute;\n    width: 7%;\n    height: 7%;\n    top: 2.5%;\n    left: 46.5%;\n    background-color: #fff;\n    transition: transform 0.4s cubic-bezier(0.35, 0, 0.25, 1);\n    outline: 0;\n    border-style: none; }\n    .color-picker .knob.is-in {\n      transform: scale(1); }\n    .color-picker .knob.is-out {\n      transform: scale(0); }\n  .color-picker:not(:focus) .knob:hover {\n    box-shadow: 0 0 50px rgba(0, 0, 0, 0.19), 0 0 15px rgba(0, 0, 0, 0.24); }\n  .color-picker .selector {\n    position: absolute;\n    width: 70%;\n    height: 70%;\n    top: 15%;\n    left: 15%;\n    padding: 0;\n    margin: 0;\n    border-radius: 50%;\n    background-color: #ff0000;\n    outline: 0;\n    cursor: pointer;\n    transition: transform 0.7s cubic-bezier(0.35, 0, 0.25, 1);\n    will-change: transform;\n    overflow: visible;\n    border: 6px solid #fff;\n }\n    .color-picker .selector::-moz-focus-inner {\n      border: 0; }\n    .color-picker .selector:hover {\n      box-shadow: 0 0 1px 1px #333; }\n    .color-picker .selector:focus {\n      box-shadow: 0 0 1px 2px #b2b2b2; }\n    .color-picker .selector.is-pressed {\n      animation: color-picker-beat 0.4s cubic-bezier(0.35, 0, 0.25, 1) forwards; }\n  .color-picker .ripple {\n    width: 20%;\n    height: 20%;\n    border-radius: 50%;\n    border: #ff0000 solid 8px;\n    opacity: 0;\n    position: absolute;\n    top: 40%;\n    left: 40%;\n    z-index: -1; }\n  .color-picker .is-rippling {\n    z-index: 0;\n    animation: color-picker-ripple 0.5s cubic-bezier(0.35, 0, 0.25, 1) forwards; }\n\n@keyframes color-picker-ripple {\n  0% {\n    transform: scale(1);\n    opacity: .3; }\n  50% {\n    opacity: .1; }\n  100% {\n    opacity: 0;\n    border-width: 0;\n    transform: scale(3.8); } }\n\n@keyframes color-picker-beat {\n  0% {\n    transform: scale(1); }\n  25% {\n    transform: scale(0.8); }\n  50% {\n    transform: scale(1); }\n  100% {\n    transform: scale(1); } }\n"
 styleInject(css)
 
 var classCallCheck = function(instance, Constructor) {
@@ -568,6 +571,7 @@ var ColorPicker = (function(_React$Component) {
         if (_this.state.isDisabled) return
 
         ev.preventDefault()
+        // _this.setState({ x: newPoint.x, y: newPoint.y })
 
         if (ev.deltaY > 0) {
           _this.rotator.angle += _this.props.step
@@ -740,7 +744,8 @@ var ColorPicker = (function(_React$Component) {
         var knobClassName = 'knob ' + (isKnobIn ? 'is-in' : 'is-out')
         // var color = 'hsla(' + hue + ', ' + saturation + '%, ' + luminosity + '%, ' + alpha + ')'
         var color = mapHueToColor(hue)
-        console.log(hue, color)
+        var gradient = getGradient(_props.hue, _props.hue2)
+        console.log('GRADIENT', gradient, _props.hue, _props.hue2)
 
         return React.createElement(
           'div',
@@ -775,7 +780,10 @@ var ColorPicker = (function(_React$Component) {
           React.createElement('button', {
             type: 'button',
             className: colorSelClassName,
-            style: { backgroundColor: color },
+            style: {
+              backgroundColor: color,
+              backgroundImage: gradient,
+            },
             onClick: this.selectColor,
             onAnimationEnd: this.togglePicker,
           }),

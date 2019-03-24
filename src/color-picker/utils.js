@@ -181,3 +181,8 @@ export const mapHueToColor = hue => {
 
   return 'white'
 }
+
+export const getGradient = (hue1, hue2) => {
+  const degree = ((hue1 - hue2) / 2) % 360
+  return `linear-gradient(${degree}deg, ${mapHueToColor(hue1)}, ${mapHueToColor(hue2)})`
+}
