@@ -120,7 +120,7 @@ class App extends Component {
                   style={{
                     width: '22px',
                     height: '22px',
-                    background: require('./assets/home.svg'),
+                    background: `url(${home})`,
                   }}
                 />
               }
