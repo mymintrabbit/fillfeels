@@ -6,6 +6,11 @@ import { TabBar, NavBar, Icon } from 'antd-mobile'
 import styled from 'styled-components'
 import './App.css'
 import 'antd-mobile/dist/antd-mobile.css'
+import update from './assets/update.svg'
+import profile from './assets/profile.svg'
+import talk from './assets/talk.svg'
+import home from './assets/home.svg'
+import buddy from './assets/buddy.svg'
 
 const ButtonWrapper = styled.div`
   margin-top: 400px;
@@ -45,6 +50,12 @@ const BottomTab = styled.div`
     background-color: white;
   }
 `
+const CustomIcon = ({ type, className = '', size = 'md', ...restProps }) => (
+  <svg className={`am-icon am-icon-${type.substr(1)} am-icon-${size} ${className}`} {...restProps}>
+    <use xlinkHref={type} /> {/* svg-sprite-loader@0.3.x */}
+    {/* <use xlinkHref={#${type.default.id}} /> */} {/* svg-sprite-loader@latest */}
+  </svg>
+)
 
 class App extends Component {
   state = {
@@ -104,22 +115,22 @@ class App extends Component {
           >
             <TabBar.Item
               icon={
+                // <CustomIcon type={require('./assets/home.svg')} />
                 <div
                   style={{
                     width: '22px',
                     height: '22px',
-                    background:
-                      'url(https://zos.alipayobjects.com/rmsportal/sifuoDUQdAFKAVcFGROC.svg) center center /  21px 21px no-repeat',
+                    background: require('./assets/home.svg'),
                   }}
                 />
               }
               selectedIcon={
+                // <CustomIcon type={require('./assets/home.svg')} />
                 <div
                   style={{
                     width: '22px',
                     height: '22px',
-                    background:
-                      'url(https://zos.alipayobjects.com/rmsportal/iSrlOTqrKddqbOmlvUfq.svg) center center /  21px 21px no-repeat',
+                    background: require('./assets/home.svg'),
                   }}
                 />
               }
@@ -136,8 +147,7 @@ class App extends Component {
                   style={{
                     width: '22px',
                     height: '22px',
-                    background:
-                      'url(https://gw.alipayobjects.com/zos/rmsportal/BTSsmHkPsQSPTktcXyTV.svg) center center /  21px 21px no-repeat',
+                    background: buddy,
                   }}
                 />
               }
@@ -146,8 +156,7 @@ class App extends Component {
                   style={{
                     width: '22px',
                     height: '22px',
-                    background:
-                      'url(https://gw.alipayobjects.com/zos/rmsportal/ekLecvKBnRazVLXbWOnE.svg) center center /  21px 21px no-repeat',
+                    background: buddy,
                   }}
                 />
               }
@@ -164,8 +173,7 @@ class App extends Component {
                   style={{
                     width: '22px',
                     height: '22px',
-                    background:
-                      'url(https://zos.alipayobjects.com/rmsportal/psUFoAMjkCcjqtUCNPxB.svg) center center /  21px 21px no-repeat',
+                    background: update,
                   }}
                 />
               }
@@ -174,8 +182,7 @@ class App extends Component {
                   style={{
                     width: '22px',
                     height: '22px',
-                    background:
-                      'url(https://zos.alipayobjects.com/rmsportal/IIRLrXXrFAhXVdhMWgUI.svg) center center /  21px 21px no-repeat',
+                    background: update,
                   }}
                 />
               }
@@ -192,8 +199,7 @@ class App extends Component {
                   style={{
                     width: '22px',
                     height: '22px',
-                    background:
-                      'url(https://gw.alipayobjects.com/zos/rmsportal/BTSsmHkPsQSPTktcXyTV.svg) center center /  21px 21px no-repeat',
+                    background: talk,
                   }}
                 />
               }
@@ -202,8 +208,7 @@ class App extends Component {
                   style={{
                     width: '22px',
                     height: '22px',
-                    background:
-                      'url(https://gw.alipayobjects.com/zos/rmsportal/ekLecvKBnRazVLXbWOnE.svg) center center /  21px 21px no-repeat',
+                    background: talk,
                   }}
                 />
               }
@@ -220,8 +225,7 @@ class App extends Component {
                   style={{
                     width: '22px',
                     height: '22px',
-                    background:
-                      'url(https://gw.alipayobjects.com/zos/rmsportal/BTSsmHkPsQSPTktcXyTV.svg) center center /  21px 21px no-repeat',
+                    background: profile,
                   }}
                 />
               }
@@ -230,8 +234,7 @@ class App extends Component {
                   style={{
                     width: '22px',
                     height: '22px',
-                    background:
-                      'url(https://gw.alipayobjects.com/zos/rmsportal/ekLecvKBnRazVLXbWOnE.svg) center center /  21px 21px no-repeat',
+                    background: profile,
                   }}
                 />
               }
