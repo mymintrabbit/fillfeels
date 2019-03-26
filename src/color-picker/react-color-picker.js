@@ -60,7 +60,6 @@ function paintColorWheelToCanvas(canvas, size) {
   for (i = 30; i < 60; i += 0.5) {
     const h = i + 60
     ctx.fillStyle = `hsl(${h}, 50%, 60%)`
-    console.log('#2 STYLE:', ctx.fillStyle)
     ctx.beginPath()
     ctx.moveTo(half, half)
 
@@ -76,7 +75,6 @@ function paintColorWheelToCanvas(canvas, size) {
   for (i = 60; i < 90; i += 0.5) {
     const h = i + 60
     ctx.fillStyle = `hsl(${h}, 50%, 60%)`
-    console.log('#3 STYLE:', ctx.fillStyle)
     ctx.beginPath()
     ctx.moveTo(half, half)
 
@@ -94,7 +92,6 @@ function paintColorWheelToCanvas(canvas, size) {
     const s = 50 + (i - 90) / 3
     const l = 60 - (i - 90) / 3
     ctx.fillStyle = `hsl(${h}, ${s}%, ${l}%)`
-    console.log('#4 STYLE:', ctx.fillStyle)
     ctx.beginPath()
     ctx.moveTo(half, half)
 
@@ -110,7 +107,6 @@ function paintColorWheelToCanvas(canvas, size) {
   for (i = 120; i <= 120; i += 0.5) {
     const h = i + 60
     ctx.fillStyle = `hsl(${h}, 60%, 50%)`
-    console.log('#5 STYLE:', ctx.fillStyle)
     ctx.beginPath()
     ctx.moveTo(half, half)
 
@@ -128,7 +124,6 @@ function paintColorWheelToCanvas(canvas, size) {
     const s = 50 + (180 - i) / 6
     const l = 40 + (180 - i) / 6
     ctx.fillStyle = `hsl(${h}, ${s}%, ${l}%)`
-    console.log('#6 STYLE:', ctx.fillStyle)
     ctx.beginPath()
     ctx.moveTo(half, half)
 
@@ -147,7 +142,6 @@ function paintColorWheelToCanvas(canvas, size) {
     const l = 50 + ((i - 215) * 30) / (280 - 215)
 
     ctx.fillStyle = `hsl(${h}, ${s}%, ${l}%)`
-    console.log('#7 STYLE:', ctx.fillStyle)
 
     ctx.beginPath()
     ctx.moveTo(half, half)
@@ -169,7 +163,6 @@ function paintColorWheelToCanvas(canvas, size) {
     const l = 80
 
     ctx.fillStyle = `hsl(${h}, ${s}%, ${l}%)`
-    console.log('#8 STYLE:', ctx.fillStyle)
     // from 330 100 80
 
     // 390 60 60
@@ -192,7 +185,6 @@ function paintColorWheelToCanvas(canvas, size) {
     const l = 80 + (i - 300) * (-20 / (360 - 300))
 
     ctx.fillStyle = `hsl(${h}, ${s}%, ${l}%)`
-    console.log('#9 STYLE:', ctx.fillStyle)
     // from 330 100 80
 
     // 390 60 60
@@ -745,7 +737,6 @@ var ColorPicker = (function(_React$Component) {
         // var color = 'hsla(' + hue + ', ' + saturation + '%, ' + luminosity + '%, ' + alpha + ')'
         var color = mapHueToColor(hue)
         var gradient = getGradient(_props.hue, _props.hue2)
-        console.log('GRADIENT', gradient, _props.hue, _props.hue2)
 
         return React.createElement(
           'div',
