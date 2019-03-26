@@ -6,17 +6,29 @@ import styled from 'styled-components'
 import './App.css'
 
 const ButtonWrapper = styled.div`
-  margin-top: 450px;
+  margin-top: 400px;
 `
 
 const AddColorButton = styled.div`
-  display: block;
-  width: 100%
   text-align: center;
-  color: #00ff00;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
   padding: 0.5em;
   cursor: pointer;
-  text-decoration: underline;
+  border-radius: 50%;
+  border: 3px solid white;
+  font-size: 1.5em;
+  width: 40px;
+  height: 40px;
+  background: #64cc9a;
+
+  ${props =>
+    props.disabled &&
+    `
+    opacity: 0.4;
+  `}
 `
 
 class App extends Component {
@@ -51,16 +63,11 @@ class App extends Component {
             <ColorPicker {...this.state} className="app-logo" onChange={this.onChange2} />
           )}
           <ButtonWrapper>
-            {!isGradient && (
-              <React.Fragment>
-                <AddColorButton onClick={() => this.onAdd()}>+ เพิ่มสี</AddColorButton>
-                <div>
-                  <small>หมายเหตุ: เมือเพิ่มสีแล้วจะไม่สามารถแก้ไขสีเดิมได้</small>
-                </div>
-              </React.Fragment>
-            )}
-
-            <p>Version 1.01</p>
+            {
+              <AddColorButton disabled={isGradient} onClick={() => this.onAdd()}>
+                &#10010;
+              </AddColorButton>
+            }
           </ButtonWrapper>
         </header>
       </div>
