@@ -2,15 +2,14 @@ import React, { Component } from 'react'
 // import logo from './logo.svg';
 import { TabBar } from 'antd-mobile'
 import styled from 'styled-components'
-import './App.css'
 import 'antd-mobile/dist/antd-mobile.css'
-import update from './assets/update.svg'
-import profile from './assets/profile.svg'
-import talk from './assets/talk.svg'
-import home from './assets/home.svg'
-import buddy from './assets/buddy.svg'
+import update from '../assets/update.svg'
+import profile from '../assets/profile.svg'
+import talk from '../assets/talk.svg'
+import home from '../assets/home.svg'
+import buddy from '../assets/buddy.svg'
 
-const BottomTab = styled.div`
+const BottomWrapper = styled.div`
   #tab-bar {
     display: flex;
     flex-direction: column;
@@ -33,7 +32,7 @@ class BottomTab extends Component {
 
   render() {
     return (
-      <BottomTab>
+      <BottomWrapper>
         <TabBar
           unselectedTintColor="#949494"
           tintColor="#33A3F4"
@@ -171,7 +170,7 @@ class BottomTab extends Component {
             }}
           />
         </TabBar>
-      </BottomTab>
+      </BottomWrapper>
     )
   }
 }
