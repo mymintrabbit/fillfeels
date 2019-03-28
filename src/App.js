@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 // import logo from './logo.svg';
-import '@radial-color-picker/react-color-picker/dist/react-color-picker.umd.min.css'
-import ColorPicker from './color-picker/react-color-picker'
 import { TabBar, NavBar, Icon } from 'antd-mobile'
 import styled from 'styled-components'
 import './App.css'
@@ -11,20 +9,7 @@ import profile from './assets/profile.svg'
 import talk from './assets/talk.svg'
 import home from './assets/home.svg'
 import buddy from './assets/buddy.svg'
-
-const ButtonWrapper = styled.div`
-  margin-top: 450px;
-`
-
-const AddColorButton = styled.div`
-  display: block;
-  width: 100%
-  text-align: center;
-  color: #00ff00;
-  padding: 0.5em;
-  cursor: pointer;
-  text-decoration: underline;
-`
+import UpdateStep1 from './pages/update-step-1'
 
 const BottomTab = styled.div`
   #tab-bar {
@@ -37,67 +22,36 @@ const BottomTab = styled.div`
   #tab-bar .am-tab-bar {
     background-color: white;
   }
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 `
-const CustomIcon = ({ type, className = '', size = 'md', ...restProps }) => (
-  <svg className={`am-icon am-icon-${type.substr(1)} am-icon-${size} ${className}`} {...restProps}>
-    <use xlinkHref={type} /> {/* svg-sprite-loader@0.3.x */}
-    {/* <use xlinkHref={#${type.default.id}} /> */} {/* svg-sprite-loader@latest */}
-  </svg>
-)
+
+const HeaderWrapper = styled.div`
+  position: fixed;
+  top: 0;
+  width: 100%;
+`
 
 class App extends Component {
   state = {
-    hue: 90,
-    saturation: 100,
-    luminosity: 50,
-    alpha: 1,
-    isGradient: false,
     selectedTab: 'redTab',
   }
 
-  onChange = ({ hue, saturation, luminosity, alpha, x, y }) => {
-    this.setState({ hue, saturation, luminosity, alpha, x, y })
-  }
-
-  onChange2 = ({ hue }) => {
-    this.setState({ hue2: hue })
-  }
-
-  onAdd = () => {
-    this.setState({ isGradient: true })
-  }
-
   render() {
-    const { isGradient } = this.state
-
     return (
       <div className="App">
-        <NavBar
-          mode="light"
-          icon={<Icon type="left" />}
-          onLeftClick={() => console.log('onLeftClick')}
-        >
-          NavBar
-        </NavBar>
+        <HeaderWrapper>
+          <NavBar
+            mode="light"
+            // icon={<Icon type="left" />}
+            // onLeftClick={() => console.log('onLeftClick')}
+          >
+            NavBar
+          </NavBar>
+        </HeaderWrapper>
 
-        <header className="App-header">
-          <ColorPicker {...this.state} className="app-logo" onChange={this.onChange} />
-          {isGradient && (
-            <ColorPicker {...this.state} className="app-logo" onChange={this.onChange2} />
-          )}
-          <ButtonWrapper>
-            {!isGradient && (
-              <React.Fragment>
-                <AddColorButton onClick={() => this.onAdd()}>+ เพิ่มสี</AddColorButton>
-                <div>
-                  <small>หมายเหตุ: เมือเพิ่มสีแล้วจะไม่สามารถแก้ไขสีเดิมได้</small>
-                </div>
-              </React.Fragment>
-            )}
-
-            <p>Version 1.01</p>
-          </ButtonWrapper>
-        </header>
+        <UpdateStep1 />
 
         <BottomTab>
           <TabBar
@@ -108,22 +62,20 @@ class App extends Component {
           >
             <TabBar.Item
               icon={
-                // <CustomIcon type={require('./assets/home.svg')} />
                 <div
                   style={{
                     width: '22px',
                     height: '22px',
-                    background: require('./assets/home.svg'),
+                    background: `url(${home})`,
                   }}
                 />
               }
               selectedIcon={
-                // <CustomIcon type={require('./assets/home.svg')} />
                 <div
                   style={{
                     width: '22px',
                     height: '22px',
-                    background: require('./assets/home.svg'),
+                    background: `url(${home}) #00FFFF`,
                   }}
                 />
               }
@@ -140,7 +92,7 @@ class App extends Component {
                   style={{
                     width: '22px',
                     height: '22px',
-                    background: buddy,
+                    background: `url(${buddy})`,
                   }}
                 />
               }
@@ -149,7 +101,7 @@ class App extends Component {
                   style={{
                     width: '22px',
                     height: '22px',
-                    background: buddy,
+                    background: `url(${buddy}) #00FFFF`,
                   }}
                 />
               }
@@ -166,7 +118,7 @@ class App extends Component {
                   style={{
                     width: '22px',
                     height: '22px',
-                    background: update,
+                    background: `url(${update})`,
                   }}
                 />
               }
@@ -175,7 +127,7 @@ class App extends Component {
                   style={{
                     width: '22px',
                     height: '22px',
-                    background: update,
+                    background: `url(${update}) #00FFFF`,
                   }}
                 />
               }
@@ -192,7 +144,7 @@ class App extends Component {
                   style={{
                     width: '22px',
                     height: '22px',
-                    background: talk,
+                    background: `url(${talk})`,
                   }}
                 />
               }
@@ -201,7 +153,7 @@ class App extends Component {
                   style={{
                     width: '22px',
                     height: '22px',
-                    background: talk,
+                    background: `url(${talk}) #00FFFF`,
                   }}
                 />
               }
@@ -218,7 +170,7 @@ class App extends Component {
                   style={{
                     width: '22px',
                     height: '22px',
-                    background: profile,
+                    background: `url(${profile})`,
                   }}
                 />
               }
@@ -227,7 +179,7 @@ class App extends Component {
                   style={{
                     width: '22px',
                     height: '22px',
-                    background: profile,
+                    background: `url(${profile}) #00FFFF`,
                   }}
                 />
               }
