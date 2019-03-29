@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-// import logo from './logo.svg';
+import { withRouter } from 'react-router-dom'
 import { TabBar } from 'antd-mobile'
 import styled from 'styled-components'
 import 'antd-mobile/dist/antd-mobile.css'
@@ -8,6 +8,7 @@ import profile from '../assets/profile.svg'
 import talk from '../assets/talk.svg'
 import home from '../assets/home.svg'
 import buddy from '../assets/buddy.svg'
+import { pathRoutes } from '../routes'
 
 const BottomWrapper = styled.div`
   #tab-bar {
@@ -30,7 +31,14 @@ class BottomTab extends Component {
     selectedTab: 'home',
   }
 
+  onChangeTab = tab => {
+    this.setState({ selectedTab: tab })
+    this.props.history.push(tab)
+  }
+
   render() {
+    const routeTabs = { ...pathRoutes }
+
     return (
       <BottomWrapper>
         <TabBar
@@ -58,11 +66,9 @@ class BottomTab extends Component {
                 }}
               />
             }
-            selected={this.state.selectedTab === 'home'}
+            selected={this.state.selectedTab === routeTabs.Home.path}
             onPress={() => {
-              this.setState({
-                selectedTab: 'home',
-              })
+              this.onChangeTab(routeTabs.Home.path)
             }}
           />
           <TabBar.Item
@@ -84,11 +90,9 @@ class BottomTab extends Component {
                 }}
               />
             }
-            selected={this.state.selectedTab === 'redTab'}
+            selected={this.state.selectedTab === routeTabs.Buddy.path}
             onPress={() => {
-              this.setState({
-                selectedTab: 'redTab',
-              })
+              this.onChangeTab(routeTabs.Buddy.path)
             }}
           />
           <TabBar.Item
@@ -110,11 +114,9 @@ class BottomTab extends Component {
                 }}
               />
             }
-            selected={this.state.selectedTab === 'greenTab'}
+            selected={this.state.selectedTab === routeTabs.UpdateStepOne.path}
             onPress={() => {
-              this.setState({
-                selectedTab: 'greenTab',
-              })
+              this.onChangeTab(routeTabs.UpdateStepOne.path)
             }}
           />
           <TabBar.Item
@@ -136,11 +138,9 @@ class BottomTab extends Component {
                 }}
               />
             }
-            selected={this.state.selectedTab === 'yellowTab'}
+            selected={this.state.selectedTab === routeTabs.Talk.path}
             onPress={() => {
-              this.setState({
-                selectedTab: 'yellowTab',
-              })
+              this.onChangeTab(routeTabs.Talk.path)
             }}
           />
           <TabBar.Item
@@ -162,11 +162,9 @@ class BottomTab extends Component {
                 }}
               />
             }
-            selected={this.state.selectedTab === 'blackTab'}
+            selected={this.state.selectedTab === routeTabs.Profile.path}
             onPress={() => {
-              this.setState({
-                selectedTab: 'blackTab',
-              })
+              this.onChangeTab(routeTabs.Profile.path)
             }}
           />
         </TabBar>
@@ -175,4 +173,4 @@ class BottomTab extends Component {
   }
 }
 
-export default BottomTab
+export default withRouter(BottomTab)
