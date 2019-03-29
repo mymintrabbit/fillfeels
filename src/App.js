@@ -1,11 +1,27 @@
 import React, { Component } from 'react'
-// import logo from './logo.svg';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
-import styled from 'styled-components'
+import { BrowserRouter as Router, Switch } from 'react-router-dom'
 import './App.css'
 import 'antd-mobile/dist/antd-mobile.css'
 import BottomTab from './components/BottomTab'
 import { Routes } from './routes'
+import { createGlobalStyle } from 'styled-components'
+
+const GlobalStyle = createGlobalStyle`
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    font-family: 'Helvetica', sans-serif !important;
+    font-weight: normal !important;
+    font-size: 16px !important;
+    line-height: 1.5;
+
+    margin: 0;
+    padding: 0;
+  }
+ 
+`
 
 class App extends Component {
   state = {
@@ -16,19 +32,10 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          {/* <HeaderWrapper>
-            <NavBar
-              mode="light"
-              // icon={<Icon type="left" />}
-              // onLeftClick={() => console.log('onLeftClick')}
-            >
-              NavBar
-            </NavBar>
-          </HeaderWrapper> */}
           <Switch>{Routes}</Switch>
-
           <BottomTab />
         </div>
+        <GlobalStyle />
       </Router>
     )
   }

@@ -43,7 +43,6 @@ function paintColorWheelToCanvas(canvas, size) {
     const h = i + 60
     const s = 60 - i / 3
     ctx.fillStyle = `hsl(${h}, ${s}%, 60%)`
-    console.log('#1 STYLE:', ctx.fillStyle)
 
     ctx.beginPath()
     ctx.moveTo(half, half)

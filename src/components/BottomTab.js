@@ -39,6 +39,10 @@ class BottomTab extends Component {
   render() {
     const routeTabs = { ...pathRoutes }
 
+    if (this.props.location.pathname === '/login') {
+      return null
+    }
+
     return (
       <BottomWrapper>
         <TabBar

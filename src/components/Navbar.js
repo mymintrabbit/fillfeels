@@ -5,7 +5,9 @@ import { NavBar } from 'antd-mobile'
 const HeaderWrapper = styled.div`
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
+  z-index: 99;
 `
 
 const Navbar = props => {
