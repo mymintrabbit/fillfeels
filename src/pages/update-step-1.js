@@ -29,6 +29,16 @@ const AddColorButton = styled.div`
   `}
 `
 
+const ColorPickerWrapper = styled.div`
+  position: relative;
+`
+
+const MoodText = styled.div`
+  color: black;
+  position: absolute;
+  transform: rotate(${props => props.degree || 0}deg);
+`
+
 class UpdateStep1 extends Component {
   state = {
     hue: 90,
@@ -55,10 +65,18 @@ class UpdateStep1 extends Component {
 
     return (
       <header className="App-header">
-        <ColorPicker {...this.state} className="app-logo" onChange={this.onChange} />
-        {isGradient && (
-          <ColorPicker {...this.state} className="app-logo" onChange={this.onChange2} />
-        )}
+        <ColorPickerWrapper>
+          <ColorPicker {...this.state} className="app-logo" onChange={this.onChange} />
+          {isGradient && (
+            <ColorPicker {...this.state} className="app-logo" onChange={this.onChange2} />
+          )}
+          {/* <MoodText degree={40}>ANGRY</MoodText>
+          <MoodText degree={40}>IN LOVE</MoodText> */}
+          <MoodText degree={-40}>HAPPY</MoodText>
+          {/* <MoodText degree={40}>NEUTRAL</MoodText>
+          <MoodText degree={40}>SAD</MoodText>
+          <MoodText degree={40}>DISTRESS</MoodText> */}
+        </ColorPickerWrapper>
         <ButtonWrapper>
           {
             <AddColorButton disabled={isGradient} onClick={() => this.onAdd()}>
