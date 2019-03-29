@@ -30,3 +30,11 @@
 .am-navbar {
   background: #efefef !important;
 }
+
+.am-modal-button-group-h .am-modal-button:last-child {
+  color: red !important;
+}
+
+.am-modal-transparent .am-modal-content {
+  border-radius: 20px !important;
+}
