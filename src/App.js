@@ -7,6 +7,7 @@ import './App.css'
 import 'antd-mobile/dist/antd-mobile.css'
 import BottomTab from './components/BottomTab'
 import UpdateStep1 from './pages/update-step-1'
+import { Routes } from './routes'
 
 const HeaderWrapper = styled.div`
   position: fixed;
@@ -22,12 +23,6 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <Route path="/" exact component={UpdateStep1} />
-        <Route path="/update/" component={UpdateStep1} />
-        <Route path="/buddy/" component={UpdateStep1} />
-        <Route path="/talk/" component={UpdateStep1} />
-        <Route path="/profile/" component={UpdateStep1} />
-
         <div className="App">
           <HeaderWrapper>
             <NavBar
@@ -39,7 +34,7 @@ class App extends Component {
             </NavBar>
           </HeaderWrapper>
 
-          <UpdateStep1 />
+          {Routes}
 
           <BottomTab />
         </div>

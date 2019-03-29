@@ -3,6 +3,13 @@ import '@radial-color-picker/react-color-picker/dist/react-color-picker.umd.min.
 import ColorPicker from '../color-picker/react-color-picker'
 import styled from 'styled-components'
 
+const LayoutWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
 const ButtonWrapper = styled.div`
   margin-top: 400px;
 `
@@ -54,11 +61,9 @@ class UpdateStep1 extends Component {
     const { isGradient } = this.state
 
     return (
-      <header className="App-header">
-        <ColorPicker {...this.state} className="app-logo" onChange={this.onChange} />
-        {isGradient && (
-          <ColorPicker {...this.state} className="app-logo" onChange={this.onChange2} />
-        )}
+      <LayoutWrapper>
+        <ColorPicker {...this.state} onChange={this.onChange} />
+        {isGradient && <ColorPicker {...this.state} onChange={this.onChange2} />}
         <ButtonWrapper>
           {
             <AddColorButton disabled={isGradient} onClick={() => this.onAdd()}>
@@ -66,7 +71,7 @@ class UpdateStep1 extends Component {
             </AddColorButton>
           }
         </ButtonWrapper>
-      </header>
+      </LayoutWrapper>
     )
   }
 }
