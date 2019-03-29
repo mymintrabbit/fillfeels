@@ -8,6 +8,8 @@ const LayoutWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  max-width: 375px;
 `
 
 const ButtonWrapper = styled.div`
@@ -36,6 +38,16 @@ const AddColorButton = styled.div`
   `}
 `
 
+const MoodText = styled.div`
+  color: black;
+  font-size: ${props => (props.isSmall ? 12 : 14)}px;
+  position: absolute;
+  transform: rotate(${props => props.degree}deg);
+  top: ${props => props.top}px;
+  left: ${props => props.left}px;
+  right: ${props => props.right}px;
+`
+
 class UpdateStep1 extends Component {
   state = {
     hue: 90,
@@ -59,11 +71,36 @@ class UpdateStep1 extends Component {
 
   render() {
     const { isGradient } = this.state
+    const width = window.innerWidth
+    let w = 0
+    let isSmall = false
+    if (width < 350) {
+      w = 15
+      isSmall = true
+    }
 
     return (
       <LayoutWrapper>
         <ColorPicker {...this.state} onChange={this.onChange} />
         {isGradient && <ColorPicker {...this.state} onChange={this.onChange2} />}
+        <MoodText degree={-120} top={310} left={15 - w} isSmall={isSmall}>
+          ANGRY
+        </MoodText>
+        <MoodText degree={-80} top={200} left={0 - w} isSmall={isSmall}>
+          IN LOVE
+        </MoodText>
+        <MoodText degree={-30} top={80} left={80 - w} isSmall={isSmall}>
+          HAPPY
+        </MoodText>
+        <MoodText degree={28} top={80} right={80 - w} isSmall={isSmall}>
+          NEUTRAL
+        </MoodText>
+        <MoodText degree={85} top={200} right={10 - w} isSmall={isSmall}>
+          SAD
+        </MoodText>
+        <MoodText degree={120} top={310} right={3 - w} isSmall={isSmall}>
+          DISTRESS
+        </MoodText>
         <ButtonWrapper>
           {
             <AddColorButton disabled={isGradient} onClick={() => this.onAdd()}>
