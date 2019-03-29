@@ -1,11 +1,41 @@
 import { Route } from 'react-router-dom'
 import React from 'react'
 import UpdateStepOnePage from './pages/update-step-1'
+import UpdateStepTwoPage from './pages/update-step-1'
+import BuddyPage from './pages/buddy'
+import HomePage from './pages/home'
+import ProfileEditPage from './pages/profile-edit'
+import ProfilePage from './pages/profile'
+import TalkPage from './pages/talk'
 
 export const pathRoutes = {
   UpdateStepOne: {
     path: '/update-step-1',
     component: UpdateStepOnePage,
+  },
+  UpdateStepTwo: {
+    path: '/update-step-2',
+    component: UpdateStepTwoPage,
+  },
+  Buddy: {
+    path: '/buddy',
+    component: BuddyPage,
+  },
+  Home: {
+    path: '/home',
+    component: HomePage,
+  },
+  ProfileEdit: {
+    path: '/profile-edit',
+    component: ProfileEditPage,
+  },
+  Profile: {
+    path: '/profile',
+    component: ProfilePage,
+  },
+  Talk: {
+    path: '/talk',
+    component: TalkPage,
   },
 }
 

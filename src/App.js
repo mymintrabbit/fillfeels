@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 // import logo from './logo.svg';
 import { TabBar, NavBar, Icon } from 'antd-mobile'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 import './App.css'
 import 'antd-mobile/dist/antd-mobile.css'
 import BottomTab from './components/BottomTab'
-import UpdateStep1 from './pages/update-step-1'
 import { Routes } from './routes'
 
 const HeaderWrapper = styled.div`
@@ -33,8 +32,7 @@ class App extends Component {
               NavBar
             </NavBar>
           </HeaderWrapper>
-
-          {Routes}
+          <Switch>{Routes}</Switch>
 
           <BottomTab />
         </div>
