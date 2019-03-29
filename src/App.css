@@ -26,3 +26,7 @@
 .color-picker:nth-child(2) > .palette.is-in {
   display: none;
 }
+
+.am-navbar {
+  background: #efefef !important;
+}
