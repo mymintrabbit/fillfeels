@@ -7,6 +7,7 @@ import HomePage from './pages/home'
 import ProfileEditPage from './pages/profile-edit'
 import ProfilePage from './pages/profile'
 import TalkPage from './pages/talk'
+import TalkChatPage from './pages/talk-chat'
 import LoginPage from './pages/login'
 
 export const pathRoutes = {
@@ -37,6 +38,10 @@ export const pathRoutes = {
   Talk: {
     path: '/talk',
     component: TalkPage,
+  },
+  TalkChat: {
+    path: '/talk-chat',
+    component: TalkChatPage,
   },
   Login: {
     path: '/login',

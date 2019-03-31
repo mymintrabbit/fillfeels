@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Button, InputItem } from 'antd-mobile'
+import { Button, InputItem, Modal } from 'antd-mobile'
 import { pathRoutes } from '../routes'
+import firebase from 'firebase'
+
+const alert = Modal.alert
 
 const Wrapper = styled.div``
 
@@ -63,9 +66,45 @@ const HorizontalLine = styled.div`
 `
 
 const Login = ({ history, ...props }) => {
-  const [isLogin, setIsLogin] = useState(false)
+  const [isLogin, setIsLogin] = useState(true)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [tel, setTel] = useState('')
+
+  useEffect(() => {
+    const isAuth = async () => {
+      const user = await firebase.auth().currentUser
+      console.log(user)
+
+      if (user) {
+        console.log('SIGN IN')
+      } else {
+        console.log('NOT SIGN IN')
+      }
+    }
+
+    isAuth()
+  }, [])
+
+  const onSubmitClick = async () => {
+    if (isLogin) {
+      try {
+        await firebase.auth().signInWithEmailAndPassword(email, password)
+
+        history.push(pathRoutes.Home.path)
+      } catch ({ message }) {
+        alert('Error', message, [{ text: 'Ok' }])
+      }
+    } else {
+      try {
+        await firebase.auth().createUserWithEmailAndPassword(email, password)
+
+        history.push(pathRoutes.Home.path)
+      } catch ({ message }) {
+        alert('Error', message, [{ text: 'Ok' }])
+      }
+    }
+  }
 
   return (
     <Layout>
@@ -88,7 +127,20 @@ const Login = ({ history, ...props }) => {
           />
         </Wrapper>
       </FieldGroup>
-      <Button type="primary" onClick={() => history.push(pathRoutes.Home.path)}>
+      {!isLogin && (
+        <FieldGroup>
+          <FieldTitle>Tel</FieldTitle>
+          <Wrapper>
+            <InputItem
+              placeholder="089 123 4567"
+              type="phone"
+              onChange={value => setTel(value)}
+              value={tel}
+            />
+          </Wrapper>
+        </FieldGroup>
+      )}
+      <Button type="primary" onClick={onSubmitClick}>
         {isLogin ? 'Login' : 'Register'}
       </Button>
       <HorizontalLine>or</HorizontalLine>
@@ -97,6 +149,7 @@ const Login = ({ history, ...props }) => {
           setIsLogin(prevState => {
             setEmail('')
             setPassword('')
+            setTel('')
             return !prevState
           })
         }
