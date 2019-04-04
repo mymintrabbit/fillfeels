@@ -53,7 +53,7 @@ export const Routes = Object.values(pathRoutes).map(route => (
   <Route key={`route-${route.path}`} {...route} />
 ))
 
-Routes.push(<Route key={'Landing-1'} path="/" exact component={UpdateStepOnePage} />)
+Routes.push(<Route key={'Landing-1'} path="/" exact component={LoginPage} />)
 Routes.push(<Route key="NotFound" render={() => <div>404 Page not found.</div>} />)
 
 export default Routes
