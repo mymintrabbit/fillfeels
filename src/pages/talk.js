@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Navbar from '../components/Navbar'
-import { pathRoutes } from '../routes'
+// import { pathRoutes } from '../routes'
 
 const Layout = styled.div`
   flex: 1;

@@ -3,7 +3,7 @@ import firebase from 'firebase'
 import styled from 'styled-components'
 
 import Navbar from '../components/Navbar'
-import { pathRoutes } from '../routes'
+// import { pathRoutes } from '../routes'
 import { mapHueToColor, getGradient } from '../color-picker/utils'
 
 const Layout = styled.div`

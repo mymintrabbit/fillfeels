@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Navbar from '../components/Navbar'
-import { pathRoutes } from '../routes'
+// import { pathRoutes } from '../routes'
 import { Icon } from 'antd-mobile'
 
 const Layout = styled.div`
