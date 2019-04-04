@@ -1,8 +1,12 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Navbar from '../components/Navbar'
-import { Icon, InputItem, ImagePicker } from 'antd-mobile'
+import { Icon, InputItem, ImagePicker, Modal } from 'antd-mobile'
 import { pathRoutes } from '../routes'
+import firebase from 'firebase'
+import { NO_AVATAR_IMG_URL } from '../config'
+
+const alert = Modal.alert
 
 const Layout = styled.div`
   flex: 1;
@@ -52,6 +56,33 @@ const Picker = styled(ImagePicker)`
 const ProfileEdit = ({ history, ...props }) => {
   const [files, setFiles] = useState([])
 
+  const [imgUrl, setImgUrl] = useState(NO_AVATAR_IMG_URL)
+  const [displayName, setDisplayName] = useState('...')
+  const [email, setEmail] = useState('')
+  const [tel, setTel] = useState('')
+
+  const getCurrentUserData = async () => {
+    try {
+      const { uid } = firebase.auth().currentUser
+      const data = await firebase
+        .database()
+        .ref('/users/' + uid)
+        .once('value')
+      const { imgUrl, display, email, tel } = data.val()
+
+      setImgUrl(imgUrl)
+      setDisplayName(display)
+      setEmail(email)
+      setTel(tel)
+    } catch ({ message }) {
+      alert('Error', message, [{ text: 'Ok' }])
+    }
+  }
+
+  useEffect(() => {
+    getCurrentUserData()
+  }, [])
+
   const onChangePhoto = () => {
     const input = document.getElementsByClassName('am-image-picker-upload-btn')
     input[0].querySelector('input').click()
@@ -65,8 +96,27 @@ const ProfileEdit = ({ history, ...props }) => {
     history.push(pathRoutes.Profile.path)
   }
 
-  const onDone = () => {
-    history.push(pathRoutes.Profile.path)
+  const onDone = async () => {
+    try {
+      const { uid } = await firebase.auth().currentUser
+
+      const users = {
+        uid,
+        display: displayName,
+        tel,
+        imgUrl: (files.length > 0 && files[0].url) || imgUrl,
+        email,
+      }
+
+      firebase
+        .database()
+        .ref('users/' + uid)
+        .set(users)
+
+      history.push(pathRoutes.Profile.path)
+    } catch ({ message }) {
+      alert('Error', message, [{ text: 'Ok' }])
+    }
   }
 
   return (
@@ -79,8 +129,7 @@ const ProfileEdit = ({ history, ...props }) => {
         Edit Profile
       </Navbar>
       <AvatarWrapper>
-        <Avatar src="http://lorempixel.com/g/100/100/" />
-        {/* <Avatar src={files.length > 0 && files[0].url} /> */}
+        <Avatar src={(files.length > 0 && files[0].url) || imgUrl} />
       </AvatarWrapper>
       <Label onClick={onChangePhoto}>Change Photo</Label>
       <Picker
@@ -91,11 +140,11 @@ const ProfileEdit = ({ history, ...props }) => {
       />
       <GridField>
         <div>Email</div>
-        <InputItem disabled value={'TEST 123'} />
-        <div>Username</div>
-        <InputItem value={'Username'} />
+        <InputItem disabled value={email} onChange={setEmail} />
+        <div>display</div>
+        <InputItem value={displayName} onChange={setDisplayName} />
         <div>Phone</div>
-        <InputItem value={'0897971233'} />
+        <InputItem value={tel} onChange={setTel} />
       </GridField>
     </Layout>
   )

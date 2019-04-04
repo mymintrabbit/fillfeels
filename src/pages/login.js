@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Button, InputItem, Modal } from 'antd-mobile'
 import { pathRoutes } from '../routes'
 import firebase from 'firebase'
+import { NO_AVATAR_IMG_URL } from '../config'
 
 const alert = Modal.alert
 
@@ -70,6 +71,7 @@ const Login = ({ history, ...props }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [tel, setTel] = useState('')
+  const [displayName, setDisplayName] = useState('')
 
   useEffect(() => {
     const isAuth = async () => {
@@ -98,6 +100,20 @@ const Login = ({ history, ...props }) => {
     } else {
       try {
         await firebase.auth().createUserWithEmailAndPassword(email, password)
+        const { uid } = await firebase.auth().currentUser
+
+        const users = {
+          uid,
+          display: displayName,
+          tel,
+          imgUrl: NO_AVATAR_IMG_URL,
+          email,
+        }
+
+        firebase
+          .database()
+          .ref('users/' + uid)
+          .set(users)
 
         history.push(pathRoutes.Home.path)
       } catch ({ message }) {
@@ -136,6 +152,18 @@ const Login = ({ history, ...props }) => {
               type="phone"
               onChange={value => setTel(value)}
               value={tel}
+            />
+          </Wrapper>
+        </FieldGroup>
+      )}
+      {!isLogin && (
+        <FieldGroup>
+          <FieldTitle>Display name</FieldTitle>
+          <Wrapper>
+            <InputItem
+              placeholder="name"
+              onChange={value => setDisplayName(value)}
+              value={displayName}
             />
           </Wrapper>
         </FieldGroup>

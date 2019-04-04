@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Navbar from '../components/Navbar'
 import { getGradient, mapHueToColor } from '../color-picker/utils'
-import { TextareaItem, Icon } from 'antd-mobile'
+import { TextareaItem, Icon, Modal } from 'antd-mobile'
 import { pathRoutes } from '../routes'
+import firebase from 'firebase'
+import { NO_AVATAR_IMG_URL } from '../config'
+
+const alert = Modal.alert
 
 const ColorCircle = styled.div`
   display: block;
@@ -50,6 +54,25 @@ const Layout = styled.div`
 
 const UpdateStep2 = props => {
   const { isGradient = false, hue = 0, hue2 = 0 } = props.location.state
+  const [imgUrl, setImgUrl] = useState(NO_AVATAR_IMG_URL)
+
+  const getCurrentUserImg = async () => {
+    try {
+      const { uid } = firebase.auth().currentUser
+      const data = await firebase
+        .database()
+        .ref('/users/' + uid)
+        .once('value')
+      const url = data.val() && data.val().imgUrl
+      setImgUrl(url)
+    } catch ({ message }) {
+      alert('Error', message, [{ text: 'Ok' }])
+    }
+  }
+
+  useEffect(() => {
+    getCurrentUserImg()
+  }, [])
 
   const onShare = () => {
     console.log('ON SHARE')
@@ -74,7 +97,7 @@ const UpdateStep2 = props => {
         Update Your Mood
       </Navbar>
       <CaptionWrapper>
-        <Avatar src="http://lorempixel.com/g/100/100/" />
+        <Avatar src={imgUrl} />
         <TextareaItem rows={3} placeholder="caption" />
       </CaptionWrapper>
       <ColorCircle isGradient={isGradient} hue={hue} hue2={hue2} />

@@ -69,7 +69,7 @@ const ChatBoxWrapper = styled.div`
 `
 
 const InputBox = styled.input`
-  width: 80%;
+  flex: 1;
   border: 1px solid gray;
   border-radius: 25px;
   margin-left: 5px;

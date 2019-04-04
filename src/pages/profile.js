@@ -1,7 +1,12 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Navbar from '../components/Navbar'
 import { pathRoutes } from '../routes'
+import { NO_AVATAR_IMG_URL } from '../config'
+import firebase from 'firebase'
+import { Modal } from 'antd-mobile'
+
+const alert = Modal.alert
 
 const Layout = styled.div`
   flex: 1;
@@ -55,15 +60,37 @@ const HorizontalLine = styled.div`
 `
 
 const Profile = ({ history, ...props }) => {
+  const [imgUrl, setImgUrl] = useState(NO_AVATAR_IMG_URL)
+  const [displayName, setDisplayName] = useState('Profile')
+
+  const getCurrentUserData = async () => {
+    try {
+      const { uid } = firebase.auth().currentUser
+      const data = await firebase
+        .database()
+        .ref('/users/' + uid)
+        .once('value')
+      const userData = data.val()
+      setImgUrl(userData.imgUrl)
+      setDisplayName(userData.display)
+    } catch ({ message }) {
+      alert('Error', message, [{ text: 'Ok' }])
+    }
+  }
+
+  useEffect(() => {
+    getCurrentUserData()
+  }, [])
+
   const onEdit = () => {
     history.push(pathRoutes.ProfileEdit.path)
   }
 
   return (
     <Layout>
-      <Navbar>Profile</Navbar>
+      <Navbar>{displayName}</Navbar>
       <AvatarWrapper>
-        <Avatar src="http://lorempixel.com/g/100/100/" />
+        <Avatar src={imgUrl} />
         <MenuWrapper>
           <AlignTop onClick={onEdit}>Icon</AlignTop>
           <HorizontalLine />
