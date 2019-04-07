@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Navbar from '../components/Navbar'
-// import { pathRoutes } from '../routes'
+import { pathRoutes } from '../routes'
+import firebase from 'firebase'
+import { mapHueToColor, getGradient } from '../color-picker/utils'
 
 const Layout = styled.div`
   flex: 1;
@@ -16,7 +18,7 @@ const GridUserWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 4fr 2fr;
   grid-gap: 1em;
-  margin-bottom: 1em;
+  margin-bottom: 1.5em;
 `
 
 const Avatar = styled.img`
@@ -39,6 +41,7 @@ const UserTitle = styled.div`
 `
 
 const LastTalk = styled.div`
+  font-weight: normal !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -54,27 +57,80 @@ const Dot = styled.div`
   margin-right: 0;
   border-radius: 50%;
   background: blue;
+
+  background: yellow;
+
+  ${props =>
+    props.isGradient
+      ? `
+  background: ${mapHueToColor(props.hue)};
+  background-image: ${getGradient(props.hue, props.hue2)};
+`
+      : `
+  background: ${mapHueToColor(props.hue)};
+`}
 `
 
 const Talk = ({ history, ...props }) => {
+  const [friends, setFriends] = useState([])
+
+  useEffect(() => {
+    const getUsers = async () => {
+      const { uid = 0 } = (await firebase.auth().currentUser) || {}
+      const ref = await firebase
+        .database()
+        .ref('users/')
+        .once('value')
+
+      const users = ref && ref.val()
+      const buddies =
+        users &&
+        Object.values(users)
+          .filter(user => user.uid !== uid)
+          .map(user => {
+            if (user.friends && Object.keys(user.friends).indexOf(uid) > -1) {
+              let lastTalk = null
+              if (user.lastTalk) {
+                lastTalk =
+                  (uid === user.lastTalk.uid && 'You :' + user.lastTalk.text) || user.lastTalk.text
+              }
+              return { ...user, friend: true, lastTalk }
+            }
+
+            return user
+          })
+          .filter(user => !!user.friend)
+
+      setFriends(buddies)
+      console.log(buddies)
+    }
+
+    getUsers()
+  }, [])
+
+  const onChat = friend => {
+    history.push(pathRoutes.TalkChat.path, {
+      ...friend,
+    })
+  }
+
+  const buddies = friends.map((friend, index) => {
+    return (
+      <GridUserWrapper key={index} onClick={() => onChat(friend)}>
+        <Avatar src={friend.imgUrl || 'http://lorempixel.com/g/100/100/'} />
+        <UserDetails>
+          <UserTitle>{friend.display}</UserTitle>
+          <LastTalk>{friend.lastTalk || 'Talk about this'}</LastTalk>
+        </UserDetails>
+        {friend.lastMood && <Dot {...friend.lastMood.color} />}
+      </GridUserWrapper>
+    )
+  })
+
   return (
     <Layout>
       <Navbar>Talks</Navbar>
-      <GridUserWrapper>
-        <Avatar src={'http://lorempixel.com/g/100/100/'} />
-        <UserDetails>
-          <UserTitle>Mackie</UserTitle>
-          <LastTalk>lorem loremloremloremloremloremloremloremloremloremloremlorem</LastTalk>
-        </UserDetails>
-        <Dot />
-      </GridUserWrapper>
-      <GridUserWrapper>
-        <Avatar src={'http://lorempixel.com/g/100/100/'} />
-        <UserDetails>
-          <UserTitle>Mackie</UserTitle>
-          <LastTalk>lorem loremloremloremloremloremloremloremloremloremloremlorem</LastTalk>
-        </UserDetails>
-      </GridUserWrapper>
+      {buddies}
     </Layout>
   )
 }

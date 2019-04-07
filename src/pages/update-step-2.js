@@ -55,6 +55,8 @@ const Layout = styled.div`
 const UpdateStep2 = props => {
   const { isGradient = false, hue = 0, hue2 = 0 } = props.location.state
   const [imgUrl, setImgUrl] = useState(NO_AVATAR_IMG_URL)
+  const [userID, setUserID] = useState(null)
+  const [description, setDescription] = useState('')
 
   const getCurrentUserImg = async () => {
     try {
@@ -64,6 +66,7 @@ const UpdateStep2 = props => {
         .ref('/users/' + uid)
         .once('value')
       const url = data.val() && data.val().imgUrl
+      setUserID(uid)
       setImgUrl(url)
     } catch ({ message }) {
       alert('Error', message, [{ text: 'Ok' }])
@@ -74,9 +77,32 @@ const UpdateStep2 = props => {
     getCurrentUserImg()
   }, [])
 
-  const onShare = () => {
-    console.log('ON SHARE')
-    // props.location.push({})
+  const onShare = async () => {
+    try {
+      const mood = {
+        color: {
+          isGradient,
+          hue,
+          hue2,
+        },
+        description,
+        createdAt: Date.now(),
+      }
+
+      await firebase
+        .database()
+        .ref('/users/' + userID + '/mood')
+        .push(mood)
+
+      await firebase
+        .database()
+        .ref('/users/' + userID + '/lastMood')
+        .set(mood)
+
+      props.history.push(pathRoutes.Home.path)
+    } catch ({ message }) {
+      alert('Error', message, [{ text: 'Ok' }])
+    }
   }
 
   const onLeftClick = () => {
@@ -98,7 +124,12 @@ const UpdateStep2 = props => {
       </Navbar>
       <CaptionWrapper>
         <Avatar src={imgUrl} />
-        <TextareaItem rows={3} placeholder="caption" />
+        <TextareaItem
+          rows={3}
+          placeholder="caption"
+          value={description}
+          onChange={setDescription}
+        />
       </CaptionWrapper>
       <ColorCircle isGradient={isGradient} hue={hue} hue2={hue2} />
     </Layout>

@@ -4,6 +4,9 @@ import Navbar from '../components/Navbar'
 import { SearchBar, Icon, Modal } from 'antd-mobile'
 import update from '../assets/update.svg'
 import close from '../assets/close.svg'
+import firebase from 'firebase'
+
+const alert = Modal.alert
 
 const Wrapper = styled.div`
   width: 100%;
@@ -115,15 +118,43 @@ class Buddy extends React.Component {
     ],
     selectedBuddy: {},
   }
+
+  componentDidMount() {
+    const getUsers = async () => {
+      const { uid = 0 } = (await firebase.auth().currentUser) || {}
+      const ref = await firebase
+        .database()
+        .ref('users/')
+        .once('value')
+
+      const users = ref && ref.val()
+      const buddies =
+        users &&
+        Object.values(users)
+          .filter(user => user.uid !== uid)
+          .map(user => {
+            if (user.friends && Object.keys(user.friends).indexOf(uid) > -1) {
+              return { ...user, friend: true }
+            }
+
+            return user
+          })
+
+      this.setState({ buddies })
+    }
+
+    getUsers()
+  }
+
   onChange = value => {
     this.setState({ value })
   }
 
-  showModal = key => {
-    console.log('click')
+  showModal = (key, buddy) => {
     //e.preventDefault() // Android
     this.setState({
       [key]: true,
+      selectedBuddy: buddy,
     })
   }
 
@@ -145,7 +176,32 @@ class Buddy extends React.Component {
   }
 
   triggerBuddyBox = buddy => {
+    console.log(buddy)
     this.setState({ isShowBuddyBox: !this.state.isShowBuddyBox, selectedBuddy: buddy })
+  }
+
+  onMakeBuddy = async user => {
+    try {
+      const { uid } = firebase.auth().currentUser
+      await firebase
+        .database()
+        .ref('/users/' + uid + '/friends/' + user.uid)
+        .set({ uid: user.uid })
+
+      await firebase
+        .database()
+        .ref('/users/' + user.uid + '/friends/' + uid)
+        .set({ uid: uid })
+
+      const buddies = this.state.buddies.map(buddy =>
+        buddy.uid === this.state.selectedBuddy.uid ? { ...buddy, friend: true } : buddy,
+      )
+      this.setState({ buddies, selectedBuddy: { ...this.state.selectedBuddy, friend: true } })
+
+      alert('Success', 'Make buddy complete', [{ text: 'Ok' }])
+    } catch ({ message }) {
+      alert('Error', message, [{ text: 'Ok' }])
+    }
   }
 
   render() {
@@ -168,11 +224,11 @@ class Buddy extends React.Component {
           </SearchWrapper>
 
           {!this.state.isShowBuddyBox ? (
-            this.state.buddies.map(buddy => (
-              <ListWrapper onClick={() => this.triggerBuddyBox(buddy)}>
+            this.state.buddies.map((buddy, index) => (
+              <ListWrapper key={index} onClick={() => this.triggerBuddyBox(buddy)}>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                  <Avatar src={`${buddy.photo}`} />
-                  <div style={{ marginLeft: 15 }}>{buddy.name}</div>
+                  <Avatar src={`${buddy.imgUrl}`} />
+                  <div style={{ marginLeft: 15 }}>{buddy.display}</div>
                 </div>
                 {buddy.friend ? (
                   <Icon
@@ -180,7 +236,7 @@ class Buddy extends React.Component {
                     size="sm"
                     onClick={e => {
                       e.stopPropagation()
-                      this.showModal('modal')
+                      this.showModal('modal', buddy)
                     }}
                   />
                 ) : null}
@@ -188,18 +244,27 @@ class Buddy extends React.Component {
             ))
           ) : (
             <BuddyBox>
-              <Avatar src={`${this.state.selectedBuddy.photo}`} size={100} />
-              <div style={{ marginTop: 15 }}>{this.state.selectedBuddy.name}</div>
-              {this.state.selectedBuddy.friend ? (
+              <Avatar src={`${this.state.selectedBuddy.imgUrl}`} size={100} />
+              <div style={{ marginTop: 15 }}>{this.state.selectedBuddy.display}</div>
+              {!this.state.selectedBuddy.friend ? (
                 <AddBuddyBox>
                   <MyIcon src={update} />
-                  <div style={{ marginLeft: 15 }}>Make a buddy</div>
+                  <div
+                    style={{ marginLeft: 15 }}
+                    onClick={() => this.onMakeBuddy(this.state.selectedBuddy)}
+                  >
+                    Make a buddy
+                  </div>
                 </AddBuddyBox>
               ) : (
                 <div style={{ margin: 37, color: 'blue' }}>Already friend</div>
               )}
 
-              <MyIcon src={close} size={18} onClick={() => this.triggerBuddyBox({})} />
+              <MyIcon
+                src={close}
+                size={18}
+                onClick={() => this.triggerBuddyBox(this.state.selectedBuddy)}
+              />
             </BuddyBox>
           )}
 
@@ -219,16 +284,41 @@ class Buddy extends React.Component {
                 },
                 {
                   text: 'Ok',
-                  onPress: () => {
+                  onPress: async () => {
                     console.log('ok')
-                    this.onClose('modal')()
+                    const buddies = this.state.buddies.map(buddy =>
+                      buddy.uid === this.state.selectedBuddy.uid
+                        ? { ...buddy, friend: false }
+                        : buddy,
+                    )
+
+                    try {
+                      const { uid } = firebase.auth().currentUser
+                      await firebase
+                        .database()
+                        .ref('/users/' + uid + '/friends/' + this.state.selectedBuddy.uid)
+                        .set(null)
+
+                      await firebase
+                        .database()
+                        .ref('/users/' + this.state.selectedBuddy.uid + '/friends/' + uid)
+                        .set(null)
+
+                      this.setState({ buddies })
+                      this.onClose('modal')()
+                    } catch ({ message }) {
+                      alert('Error', message, [{ text: 'Ok' }])
+                    }
                   },
                 },
               ]}
               wrapProps={{ onTouchStart: this.onWrapTouchStart }}
             >
               <div style={{ minheight: 100, padding: 10 }}>
-                <Avatar src="http://lorempixel.com/100/100/" size={100} />
+                <Avatar
+                  src={this.state.selectedBuddy.imgUrl || 'http://lorempixel.com/100/100/'}
+                  size={100}
+                />
                 <div style={{ marginTop: 15 }}>Remove from buddies?</div>
               </div>
             </Modal>

@@ -99,12 +99,25 @@ const ProfileEdit = ({ history, ...props }) => {
   const onDone = async () => {
     try {
       const { uid } = await firebase.auth().currentUser
+      const ref = (Math.random() * 100000).toFixed(0).toString() + '.jpg'
+      let downloadUrl = null
+
+      const fileRef = await firebase
+        .storage()
+        .ref()
+        .child(ref)
+
+      const fileUrl = (files.length > 0 && files[0].url) || null
+      if (fileUrl) {
+        await fileRef.putString(fileUrl, 'data_url')
+        downloadUrl = await fileRef.getDownloadURL()
+      }
 
       const users = {
         uid,
         display: displayName,
         tel,
-        imgUrl: (files.length > 0 && files[0].url) || imgUrl,
+        imgUrl: downloadUrl || imgUrl,
         email,
       }
 
