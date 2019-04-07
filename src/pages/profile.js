@@ -96,7 +96,7 @@ const Profile = ({ history, ...props }) => {
             <img alt="edit-icon" src={EDIT_ICON} />
           </AlignTop>
           <HorizontalLine />
-          {/* <AlignBottom>Icon</AlignBottom> */}
+          <AlignBottom>-</AlignBottom>
         </MenuWrapper>
       </AvatarWrapper>
     </Layout>
