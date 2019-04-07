@@ -70,6 +70,7 @@ const ContentImage = styled.div`
 
 const ContentDescription = styled.div`
   text-align: left;
+  word-break: break-word;
 `
 
 const Time = styled.div`

@@ -62,7 +62,7 @@ const ChatSelf = styled.div`
   border-radius: 25px;
   text-align: left;
   padding: 0.25em 1em;
-  word-break: break-all;
+  word-break: break-word;
 `
 
 const Avatar = styled.img`
