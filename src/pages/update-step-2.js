@@ -94,6 +94,11 @@ const UpdateStep2 = props => {
         .ref('/users/' + userID + '/mood')
         .push(mood)
 
+      await firebase
+        .database()
+        .ref('/users/' + userID + '/lastMood')
+        .set(mood)
+
       props.history.push(pathRoutes.Home.path)
     } catch ({ message }) {
       alert('Error', message, [{ text: 'Ok' }])

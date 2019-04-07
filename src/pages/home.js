@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import Navbar from '../components/Navbar'
 import { pathRoutes } from '../routes'
 import { mapHueToColor, getGradient } from '../color-picker/utils'
+import { getDateDiff } from '../utils'
 
 const Layout = styled.div`
   flex: 1;
@@ -35,6 +36,7 @@ const ContentTitle = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  position: relative;
 `
 
 const Avatar = styled.img`
@@ -68,6 +70,14 @@ const ContentImage = styled.div`
 
 const ContentDescription = styled.div`
   text-align: left;
+`
+
+const Time = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  // font-size: 12px !important;
+  font-weight: normal !important;
 `
 
 const Home = () => {
@@ -111,6 +121,7 @@ const Home = () => {
       <ContentTitle>
         <Avatar src={mood.imgUrl} />
         {mood.display}
+        <Time>{getDateDiff(mood.createdAt)}</Time>
       </ContentTitle>
       <ContentImage {...mood.color} />
       <ContentDescription>{mood.description}</ContentDescription>

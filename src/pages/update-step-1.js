@@ -41,7 +41,7 @@ const AddColorButton = styled.div`
 `
 
 const MoodText = styled.div`
-  color: black;
+  color: #5f5f5f;
   font-size: ${props => (props.isSmall ? 12 : 14)}px;
   position: absolute;
   transform: rotate(${props => props.degree}deg);
