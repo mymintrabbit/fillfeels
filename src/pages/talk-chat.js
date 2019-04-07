@@ -62,6 +62,7 @@ const ChatSelf = styled.div`
   border-radius: 25px;
   text-align: left;
   padding: 0.25em 1em;
+  word-break: break-all;
 `
 
 const Avatar = styled.img`
@@ -207,7 +208,7 @@ const TalkChat = ({ history, location, ...props }) => {
     )
   })
 
-  const ThemeMood = () => (props.color ? <Theme {...props.color} /> : null)
+  const ThemeMood = () => (props.lastMood ? <Theme {...props.lastMood.color} /> : null)
 
   const Update = () =>
     getDateDiff(lastTalk) !== 'Now' && <LastUpdate>update: {getDateDiff(lastTalk)}</LastUpdate>
