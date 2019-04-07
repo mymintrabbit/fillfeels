@@ -92,7 +92,7 @@ const Talk = ({ history, ...props }) => {
               let lastTalk = null
               if (user.lastTalk) {
                 lastTalk =
-                  (uid === user.lastTalk.uid && 'You :' + user.lastTalk.text) || user.lastTalk.text
+                  (uid === user.lastTalk.uid && 'You: ' + user.lastTalk.text) || user.lastTalk.text
               }
               return { ...user, friend: true, lastTalk }
             }
