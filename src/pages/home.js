@@ -18,8 +18,6 @@ const Layout = styled.div`
 const ContentWrapper = styled.div`
   display: grid;
   grid-row-gap: 1em;
-
-  margin-top: 2em;
 `
 
 const ContentItem = styled.div`
