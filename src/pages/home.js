@@ -26,6 +26,7 @@ const ContentItem = styled.div`
   display: flex;
   flex-direction: column;
   padding: 1.5em 0;
+  padding-bottom: 4em;
 
   &:not(last-child) {
     border-bottom: 1px solid #efefef;
@@ -75,7 +76,7 @@ const ContentDescription = styled.div`
 
 const Time = styled.div`
   position: absolute;
-  top: 0;
+  top: 4px;
   right: 0;
   // font-size: 12px !important;
   font-weight: normal !important;

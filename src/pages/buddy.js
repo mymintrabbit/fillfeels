@@ -224,24 +224,26 @@ class Buddy extends React.Component {
           </SearchWrapper>
 
           {!this.state.isShowBuddyBox ? (
-            this.state.buddies.map((buddy, index) => (
-              <ListWrapper key={index} onClick={() => this.triggerBuddyBox(buddy)}>
-                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                  <Avatar src={`${buddy.imgUrl}`} />
-                  <div style={{ marginLeft: 15 }}>{buddy.display}</div>
-                </div>
-                {buddy.friend ? (
-                  <Icon
-                    type="ellipsis"
-                    size="sm"
-                    onClick={e => {
-                      e.stopPropagation()
-                      this.showModal('modal', buddy)
-                    }}
-                  />
-                ) : null}
-              </ListWrapper>
-            ))
+            this.state.buddies
+              .filter(buddy => buddy.display && buddy.display.indexOf(this.state.value) > -1)
+              .map((buddy, index) => (
+                <ListWrapper key={index} onClick={() => this.triggerBuddyBox(buddy)}>
+                  <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                    <Avatar src={`${buddy.imgUrl}`} />
+                    <div style={{ marginLeft: 15 }}>{buddy.display}</div>
+                  </div>
+                  {buddy.friend ? (
+                    <Icon
+                      type="ellipsis"
+                      size="sm"
+                      onClick={e => {
+                        e.stopPropagation()
+                        this.showModal('modal', buddy)
+                      }}
+                    />
+                  ) : null}
+                </ListWrapper>
+              ))
           ) : (
             <BuddyBox>
               <Avatar src={`${this.state.selectedBuddy.imgUrl}`} size={100} />

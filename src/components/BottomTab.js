@@ -67,7 +67,7 @@ class BottomTab extends Component {
                 style={{
                   width: '22px',
                   height: '22px',
-                  background: `url(${home}) #00FFFF`,
+                  background: `url(${home}) #FFFFFF`,
                 }}
               />
             }
@@ -91,7 +91,7 @@ class BottomTab extends Component {
                 style={{
                   width: '22px',
                   height: '22px',
-                  background: `url(${buddy}) #00FFFF`,
+                  background: `url(${buddy}) #FFFFFF`,
                 }}
               />
             }
@@ -115,7 +115,7 @@ class BottomTab extends Component {
                 style={{
                   width: '22px',
                   height: '22px',
-                  background: `url(${update}) #00FFFF`,
+                  background: `url(${update}) #FFFFFF`,
                 }}
               />
             }
@@ -139,7 +139,7 @@ class BottomTab extends Component {
                 style={{
                   width: '22px',
                   height: '22px',
-                  background: `url(${talk}) #00FFFF`,
+                  background: `url(${talk}) #FFFFFF`,
                 }}
               />
             }
@@ -163,7 +163,7 @@ class BottomTab extends Component {
                 style={{
                   width: '22px',
                   height: '22px',
-                  background: `url(${profile}) #00FFFF`,
+                  background: `url(${profile}) #FFFFFF`,
                 }}
               />
             }

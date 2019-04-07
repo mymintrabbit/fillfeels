@@ -8,7 +8,7 @@ import { mapHueToColor, getGradient } from '../color-picker/utils'
 const Layout = styled.div`
   flex: 1;
   padding: 1.5em;
-  padding-top: 75px;
+  padding-top: 60px;
   width: 100%;
 
   box-sizing: border-box;

@@ -5,7 +5,7 @@ import { pathRoutes } from '../routes'
 import { NO_AVATAR_IMG_URL } from '../config'
 import firebase from 'firebase'
 import { Modal } from 'antd-mobile'
-
+import EDIT_ICON from '../assets/edit.png'
 const alert = Modal.alert
 
 const Layout = styled.div`
@@ -92,9 +92,11 @@ const Profile = ({ history, ...props }) => {
       <AvatarWrapper>
         <Avatar src={imgUrl} />
         <MenuWrapper>
-          <AlignTop onClick={onEdit}>Icon</AlignTop>
+          <AlignTop onClick={onEdit}>
+            <img alt="edit-icon" src={EDIT_ICON} />
+          </AlignTop>
           <HorizontalLine />
-          <AlignBottom>Icon</AlignBottom>
+          {/* <AlignBottom>Icon</AlignBottom> */}
         </MenuWrapper>
       </AvatarWrapper>
     </Layout>
