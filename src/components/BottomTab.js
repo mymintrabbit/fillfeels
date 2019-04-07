@@ -40,7 +40,7 @@ class BottomTab extends Component {
   render() {
     const routeTabs = { ...pathRoutes }
 
-    if (this.props.location.pathname === '/login') {
+    if (this.props.location.pathName === '/login') {
       return null
     }
 
