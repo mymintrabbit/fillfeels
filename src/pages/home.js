@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import firebase from 'firebase'
 import styled from 'styled-components'
 
@@ -24,6 +24,11 @@ const ContentWrapper = styled.div`
 const ContentItem = styled.div`
   display: flex;
   flex-direction: column;
+  padding: 1.5em 0;
+
+  &:not(last-child) {
+    border-bottom: 1px solid #efefef;
+  }
 `
 
 const ContentTitle = styled.div`
@@ -48,49 +53,74 @@ const ContentImage = styled.div`
   border-radius: 50%;
   margin: 1em auto;
 
+  background: yellow;
+
   ${props =>
     props.isGradient
       ? `
   background: ${mapHueToColor(props.hue)};
-  background-image: ${getGradient(props.hue, props.hue2)}
+  background-image: ${getGradient(props.hue, props.hue2)};
 `
       : `
   background: ${mapHueToColor(props.hue)};
 `}
-
-  background: yellow;
 `
 
-const ContentDescription = styled.div``
+const ContentDescription = styled.div`
+  text-align: left;
+`
 
 const Home = () => {
-  useEffect(() => {
-    const isAuth = async () => {
-      const user = await firebase.auth().currentUser
+  const [moodList, setMoodList] = useState([])
 
-      if (user) {
-        console.log('SIGN IN')
-      } else {
-        console.log('NOT SIGN IN')
-      }
+  useEffect(() => {
+    const getMood = async () => {
+      const ref = await firebase
+        .database()
+        .ref('users/')
+        .once('value')
+
+      const users = ref && ref.val()
+      const moodList = Object.values(users).reduce((result, user) => {
+        let userMood = []
+        if (user.mood) {
+          userMood = Object.values(user.mood).map(mood => {
+            return {
+              display: user.display,
+              email: user.email,
+              imgUrl: user.imgUrl,
+              tel: user.tel,
+              ...mood,
+            }
+          })
+        }
+
+        result = [...result, ...userMood]
+        return result
+      }, [])
+
+      moodList.sort((a, b) => b.createdAt - a.createdAt)
+      setMoodList(moodList)
     }
 
-    isAuth()
+    getMood()
   }, [])
+
+  const moods = moodList.map((mood, index) => (
+    <ContentItem key={index}>
+      <ContentTitle>
+        <Avatar src={mood.imgUrl} />
+        {mood.display}
+      </ContentTitle>
+      <ContentImage {...mood.color} />
+      <ContentDescription>{mood.description}</ContentDescription>
+    </ContentItem>
+  ))
 
   return (
     <Layout>
       <Navbar> Home </Navbar>
-      <ContentWrapper>
-        <ContentItem>
-          <ContentTitle>
-            <Avatar src="http://lorempixel.com/g/100/100/" />
-            Mackie...
-          </ContentTitle>
-          <ContentImage />
-          <ContentDescription>loremrererqwewql;ekqwopeiasopdpoasdiop</ContentDescription>
-        </ContentItem>
-      </ContentWrapper>
+      <ContentWrapper>{moods}</ContentWrapper>
     </Layout>
   )
 }

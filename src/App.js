@@ -13,7 +13,7 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     font-family: 'Helvetica', sans-serif !important;
-    font-weight: normal !important;
+    font-weight: bold !important;
     font-size: 16px !important;
     line-height: 1.5;
 
