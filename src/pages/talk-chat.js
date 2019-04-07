@@ -116,7 +116,7 @@ const SendButton = styled.div`
 `
 
 const TalkChat = ({ history, location, ...props }) => {
-  const { uid = 0, display = 'Test' } = location.state
+  const { uid = 0, display = 'Test', lastMood = null } = location.state
   const [chatList, setChatList] = useState([])
   const [input, setInput] = useState('')
   const [imgUrl, setImgUrl] = useState('')
@@ -208,7 +208,7 @@ const TalkChat = ({ history, location, ...props }) => {
     )
   })
 
-  const ThemeMood = () => (props.lastMood ? <Theme {...props.lastMood.color} /> : null)
+  const ThemeMood = () => (lastMood ? <Theme {...lastMood.color} /> : null)
 
   const Update = () =>
     getDateDiff(lastTalk) !== 'Now' && <LastUpdate>update: {getDateDiff(lastTalk)}</LastUpdate>
