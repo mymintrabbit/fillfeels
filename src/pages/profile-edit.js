@@ -113,7 +113,10 @@ const ProfileEdit = ({ history, ...props }) => {
         downloadUrl = await fileRef.getDownloadURL()
       }
 
+      const userData = await firebase.database().ref('users/' + uid)
+
       const users = {
+        ...userData.val(),
         uid,
         display: displayName,
         tel,
@@ -121,7 +124,7 @@ const ProfileEdit = ({ history, ...props }) => {
         email,
       }
 
-      firebase
+      await firebase
         .database()
         .ref('users/' + uid)
         .set(users)
