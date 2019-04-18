@@ -2,13 +2,17 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import { TabBar } from 'antd-mobile'
 import styled from 'styled-components'
-import 'antd-mobile/dist/antd-mobile.css'
-import update from '../assets/update.svg'
-import profile from '../assets/profile.svg'
-import talk from '../assets/talk.svg'
-import home from '../assets/home.svg'
-import buddy from '../assets/buddy.svg'
 import { pathRoutes } from '../routes'
+import ICON_BUDDY from '../assets/icon_buddy.svg'
+import ICON_BUDDY_ACTIVE from '../assets/icon_buddy_active.svg'
+import ICON_HOME from '../assets/icon_home.svg'
+import ICON_HOME_ACTIVE from '../assets/icon_home_active.svg'
+import ICON_PROFILE from '../assets/icon_profile.svg'
+import ICON_PROFILE_ACTIVE from '../assets/icon_profile_active.svg'
+import ICON_TALK from '../assets/icon_talk.svg'
+import ICON_TALK_ACTIVE from '../assets/icon_talk_active.svg'
+import ICON_UPDATE from '../assets/icon_update.svg'
+import ICON_UPDATE_ACTIVE from '../assets/icon_update_active.svg'
 
 const BottomWrapper = styled.div`
   #tab-bar {
@@ -58,7 +62,7 @@ class BottomTab extends Component {
                 style={{
                   width: '22px',
                   height: '22px',
-                  background: `url(${home})`,
+                  background: `url(${ICON_HOME})`,
                 }}
               />
             }
@@ -67,7 +71,7 @@ class BottomTab extends Component {
                 style={{
                   width: '22px',
                   height: '22px',
-                  background: `url(${home}) #FFFFFF`,
+                  background: `url(${ICON_HOME_ACTIVE}) #FFFFFF`,
                 }}
               />
             }
@@ -82,7 +86,7 @@ class BottomTab extends Component {
                 style={{
                   width: '22px',
                   height: '22px',
-                  background: `url(${buddy})`,
+                  background: `url(${ICON_BUDDY})`,
                 }}
               />
             }
@@ -91,7 +95,7 @@ class BottomTab extends Component {
                 style={{
                   width: '22px',
                   height: '22px',
-                  background: `url(${buddy}) #FFFFFF`,
+                  background: `url(${ICON_BUDDY_ACTIVE}) #FFFFFF`,
                 }}
               />
             }
@@ -106,7 +110,7 @@ class BottomTab extends Component {
                 style={{
                   width: '22px',
                   height: '22px',
-                  background: `url(${update})`,
+                  background: `url(${ICON_UPDATE})`,
                 }}
               />
             }
@@ -115,7 +119,7 @@ class BottomTab extends Component {
                 style={{
                   width: '22px',
                   height: '22px',
-                  background: `url(${update}) #FFFFFF`,
+                  background: `url(${ICON_UPDATE_ACTIVE}) #FFFFFF`,
                 }}
               />
             }
@@ -130,7 +134,7 @@ class BottomTab extends Component {
                 style={{
                   width: '22px',
                   height: '22px',
-                  background: `url(${talk})`,
+                  background: `url(${ICON_TALK})`,
                 }}
               />
             }
@@ -139,7 +143,7 @@ class BottomTab extends Component {
                 style={{
                   width: '22px',
                   height: '22px',
-                  background: `url(${talk}) #FFFFFF`,
+                  background: `url(${ICON_TALK_ACTIVE}) #FFFFFF`,
                 }}
               />
             }
@@ -154,7 +158,7 @@ class BottomTab extends Component {
                 style={{
                   width: '22px',
                   height: '22px',
-                  background: `url(${profile})`,
+                  background: `url(${ICON_PROFILE})`,
                 }}
               />
             }
@@ -163,7 +167,7 @@ class BottomTab extends Component {
                 style={{
                   width: '22px',
                   height: '22px',
-                  background: `url(${profile}) #FFFFFF`,
+                  background: `url(${ICON_PROFILE_ACTIVE}) #FFFFFF`,
                 }}
               />
             }

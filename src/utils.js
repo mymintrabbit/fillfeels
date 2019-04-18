@@ -2,7 +2,7 @@ import moment from 'moment'
 
 /**
  * @param {date} - date time format
- * @return {String} return new date time diff to string
+ * @return {string} - return new date time diff to string
  *
  * Example:
  * --- 1 minutes ago ---
