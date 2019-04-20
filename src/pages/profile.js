@@ -316,7 +316,7 @@ const Profile = ({ history, ...props }) => {
               [COLOR_MAPPING.BLUE]: 0,
               [COLOR_MAPPING.GREEN]: 0,
               max: 0,
-              color: [COLOR_MAPPING.RED],
+              color: COLOR_MAPPING.RED,
             },
           ),
           ...moodMonth.reduce((result, mood) => {

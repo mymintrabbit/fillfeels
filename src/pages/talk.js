@@ -4,8 +4,11 @@ import Navbar from '../components/Navbar'
 import { pathRoutes } from '../routes'
 import firebase from 'firebase'
 import { mapHueToColor, getGradient } from '../color-picker/utils'
+import ICON_TALK_EMPTY from '../assets/icon_talk_empty.svg'
 
 const Layout = styled.div`
+  display: flex;
+  flex-direction: column;
   flex: 1;
   padding: 1.5em;
   padding-top: 60px;
@@ -71,6 +74,13 @@ const Dot = styled.div`
 `}
 `
 
+const EmptyWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+`
+
 const Talk = ({ history, ...props }) => {
   const [friends, setFriends] = useState([])
 
@@ -126,6 +136,17 @@ const Talk = ({ history, ...props }) => {
       </GridUserWrapper>
     )
   })
+
+  if (friends.length === 0) {
+    return (
+      <Layout>
+        <Navbar>Talkss</Navbar>
+        <EmptyWrapper>
+          <img src={ICON_TALK_EMPTY} alt={'icon-talk-empty'} />
+        </EmptyWrapper>
+      </Layout>
+    )
+  }
 
   return (
     <Layout>
