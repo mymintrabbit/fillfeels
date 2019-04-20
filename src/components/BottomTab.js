@@ -19,12 +19,15 @@ const BottomWrapper = styled.div`
     display: flex;
     flex-direction: column;
   }
+  
   #tab-bar {
     height: 40px;
   }
-  #tab-bar .am-tab-bar {
-    background-color: white;
+  
+  .am-tab-bar-bar {
+    background-color: #fafafa !important;
   }
+  
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -33,7 +36,7 @@ const BottomWrapper = styled.div`
 
 class BottomTab extends Component {
   state = {
-    selectedTab: 'home',
+    selectedTab: '/home',
   }
 
   onChangeTab = tab => {

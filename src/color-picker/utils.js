@@ -1,5 +1,36 @@
+import { COLOR_MAPPING } from '../config'
+
+
 const inRangeOf = (hue, min, max) => {
   return min <= hue && hue < max
+}
+
+export const mapHueToRangeColor = hue => {
+  if (inRangeOf(hue, 0, 50)) {
+    return COLOR_MAPPING.GREEN
+  }
+
+  if (inRangeOf(hue, 50, 110)) {
+    return COLOR_MAPPING.BLUE
+  }
+
+  if (inRangeOf(hue, 110, 145)) {
+    return COLOR_MAPPING.BLUE_DARK
+  }
+
+  if (inRangeOf(hue, 215, 245)) {
+    return COLOR_MAPPING.RED
+  }
+
+  if (inRangeOf(hue, 245, 295)) {
+    return COLOR_MAPPING.PINK
+  }
+
+  if (inRangeOf(hue, 295, 360)) {
+    return COLOR_MAPPING.YELLOW
+  }
+
+  return '#FFFFFF'
 }
 
 export const mapHueToColor = hue => {
