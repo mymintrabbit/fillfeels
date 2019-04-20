@@ -298,9 +298,27 @@ const Profile = ({ history, ...props }) => {
         .map(moodMonth => ({
           month: moodMonth[0].month,
           length: moodMonth.length,
-          lastMood: moodMonth.reduce((previous, iterator) => {
-            return previous.createdAt > iterator.createdAt ? previous : iterator
-          }),
+          maxMood: moodMonth.reduce(
+            (result, mood) => {
+              result[mapHueToRangeColor(mood.color.hue)] += 1
+              if (result.max < result[mapHueToRangeColor(mood.color.hue)]) {
+                result.max = result[mapHueToRangeColor(mood.color.hue)]
+                result.color = mapHueToRangeColor(mood.color.hue)
+              }
+
+              return result
+            },
+            {
+              [COLOR_MAPPING.RED]: 0,
+              [COLOR_MAPPING.YELLOW]: 0,
+              [COLOR_MAPPING.PINK]: 0,
+              [COLOR_MAPPING.BLUE_DARK]: 0,
+              [COLOR_MAPPING.BLUE]: 0,
+              [COLOR_MAPPING.GREEN]: 0,
+              max: 0,
+              color: [COLOR_MAPPING.RED],
+            },
+          ),
           ...moodMonth.reduce((result, mood) => {
             result[mapHueToRangeColor(mood.color.hue)] = [
               ...(result[mapHueToRangeColor(mood.color.hue)] || []),
@@ -362,7 +380,7 @@ const Profile = ({ history, ...props }) => {
             </MonthCare>
           </Wrapper>
           <DotWrapper>
-            <Dot {...styles.dotStyle.medium} {...moodMonth.lastMood.color} />
+            <Dot {...styles.dotStyle.medium} background={moodMonth.maxMood.color} />
           </DotWrapper>
         </StatMonth>
         <Wrapper>
