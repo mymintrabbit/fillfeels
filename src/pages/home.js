@@ -5,9 +5,14 @@ import Expand from '../assets/expand.svg'
 import Navbar from '../components/Navbar'
 import ICON_TALK from '../assets/icon_talk.svg'
 import ICON_TAKECARE from '../assets/icon_profile_takecare.svg'
+import ICON_TALK_ACTIVE from '../assets/icon_talk_active.svg'
+import ICON_TAKECARE_ACTIVE from '../assets/icon_profile_takecare_active.svg'
 // import { pathRoutes } from '../routes'
+import { Modal } from 'antd-mobile'
 import { mapHueToColor, getGradient } from '../color-picker/utils'
 import { getDateDiff } from '../utils'
+
+const alert = Modal.alert
 
 const Layout = styled.div`
   flex: 1;
@@ -125,6 +130,57 @@ const GiveCallText = styled.div`
 
 const Home = () => {
   const [moodList, setMoodList] = useState([])
+  const [uid, SetUid] = useState(null)
+
+  const onTakeCare = async (mood, index) => {
+    if (!uid) {
+      return alert('Error', 'Session is expired please login again', [{ text: 'Ok' }])
+      // if no user data then we return
+    }
+
+    await firebase
+      .database()
+      .ref('/users/' + uid + '/mood/' + mood.key)
+      .set({
+        ...mood,
+        isCare: !mood.isCare,
+      })
+
+    const newMoodList = {
+      ...moodList,
+      [index]: {
+        ...mood,
+        isCare: !mood.isCare,
+      },
+    }
+
+    setMoodList(Object.values(newMoodList))
+  }
+
+  const onTalkAbout = async (mood, index) => {
+    if (!uid) {
+      return alert('Error', 'Session is expired please login again', [{ text: 'Ok' }])
+      // if no user data then we return
+    }
+
+    await firebase
+      .database()
+      .ref('/users/' + uid + '/mood/' + mood.key)
+      .set({
+        ...mood,
+        isTalk: !mood.isTalk,
+      })
+
+    const newMoodList = {
+      ...moodList,
+      [index]: {
+        ...mood,
+        isTalk: !mood.isTalk,
+      },
+    }
+
+    setMoodList(Object.values(newMoodList))
+  }
 
   useEffect(() => {
     const getMood = async () => {
@@ -137,8 +193,9 @@ const Home = () => {
       const moodList = Object.values(users).reduce((result, user) => {
         let userMood = []
         if (user.mood) {
-          userMood = Object.values(user.mood).map(mood => {
+          userMood = Object.entries(user.mood).map(([key, mood]) => {
             return {
+              key,
               display: user.display,
               email: user.email,
               imgUrl: user.imgUrl,
@@ -156,7 +213,13 @@ const Home = () => {
       setMoodList(moodList)
     }
 
+    const getUserData = async () => {
+      const { uid = null } = (await firebase.auth().currentUser) || {}
+      SetUid(uid)
+    }
+
     getMood()
+    getUserData()
   }, [])
 
   const moods = moodList.map((mood, index) => (
@@ -169,13 +232,13 @@ const Home = () => {
       <ContentImage {...mood.color} />
       <ContentDescription>{mood.description}</ContentDescription>
       <ActionButtonWrapper>
-        <ActionButton>
-          <ActionIcon src={ICON_TAKECARE} />
+        <ActionButton onClick={() => onTakeCare(mood, index)}>
+          <ActionIcon src={!mood.isCare ? ICON_TAKECARE : ICON_TAKECARE_ACTIVE} />
           Take care
         </ActionButton>
         <VerticalLine />
-        <ActionButton>
-          <ActionIcon src={ICON_TALK} />
+        <ActionButton onClick={() => onTalkAbout(mood, index)}>
+          <ActionIcon src={!mood.isTalk ? ICON_TALK : ICON_TALK_ACTIVE} />
           Talk about
         </ActionButton>
       </ActionButtonWrapper>
