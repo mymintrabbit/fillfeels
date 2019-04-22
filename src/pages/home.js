@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import firebase from 'firebase'
 import styled from 'styled-components'
-
+import Expand from '../assets/expand.svg'
 import Navbar from '../components/Navbar'
+import ICON_TALK from '../assets/icon_talk.svg'
+import ICON_TAKECARE from '../assets/icon_profile_takecare.svg'
 // import { pathRoutes } from '../routes'
 import { mapHueToColor, getGradient } from '../color-picker/utils'
 import { getDateDiff } from '../utils'
@@ -80,6 +82,47 @@ const Time = styled.div`
   font-weight: normal !important;
 `
 
+const ActionButtonWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 0px 1fr;
+  margin-top: 1em;
+  padding: 10px 0;
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
+`
+
+const ActionButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 1em;
+  padding-right: 1em;
+`
+
+const VerticalLine = styled.div`
+  flex: 1;
+  height: 100%;
+  width: 0;
+  border-right: 1px solid gray;
+`
+
+const ActionIcon = styled.img`
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  object-fit: cover;
+`
+
+const GiveCall = styled.img`
+  width: 100%;
+`
+
+const GiveCallText = styled.div`
+  position: relative;
+  top: -1.75em;
+  color: white;
+`
+
 const Home = () => {
   const [moodList, setMoodList] = useState([])
 
@@ -125,6 +168,19 @@ const Home = () => {
       </ContentTitle>
       <ContentImage {...mood.color} />
       <ContentDescription>{mood.description}</ContentDescription>
+      <ActionButtonWrapper>
+        <ActionButton>
+          <ActionIcon src={ICON_TAKECARE} />
+          Take care
+        </ActionButton>
+        <VerticalLine />
+        <ActionButton>
+          <ActionIcon src={ICON_TALK} />
+          Talk about
+        </ActionButton>
+      </ActionButtonWrapper>
+      <GiveCall src={Expand} />
+      <GiveCallText>Give a call</GiveCallText>
     </ContentItem>
   ))
 

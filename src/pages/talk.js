@@ -140,7 +140,7 @@ const Talk = ({ history, ...props }) => {
   if (friends.length === 0) {
     return (
       <Layout>
-        <Navbar>Talkss</Navbar>
+        <Navbar>Talks</Navbar>
         <EmptyWrapper>
           <img src={ICON_TALK_EMPTY} alt={'icon-talk-empty'} />
         </EmptyWrapper>
