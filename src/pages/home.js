@@ -98,6 +98,7 @@ const ActionButtonWrapper = styled.div`
 `
 
 const ActionButton = styled.div`
+  max-height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
