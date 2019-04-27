@@ -11,6 +11,7 @@ import ICON_TAKECARE_ACTIVE from '../assets/icon_profile_takecare_active.svg'
 import { Modal } from 'antd-mobile'
 import { mapHueToColor, getGradient } from '../color-picker/utils'
 import { getDateDiff } from '../utils'
+import { pathRoutes } from '../routes'
 
 const alert = Modal.alert
 
@@ -128,33 +129,41 @@ const GiveCallText = styled.div`
   color: white;
 `
 
-const Home = () => {
+const Home = ({ history }) => {
   const [moodList, setMoodList] = useState([])
   const [uid, SetUid] = useState(null)
 
-  const onTakeCare = async (mood, index) => {
+  const onTakeCare = async (mood, index, isCare) => {
     if (!uid) {
       return alert('Error', 'Session is expired please login again', [{ text: 'Ok' }])
       // if no user data then we return
     }
 
-    await firebase
-      .database()
-      .ref('/users/' + uid + '/mood/' + mood.key)
-      .set({
-        ...mood,
-        isCare: !mood.isCare,
-      })
-
-    const newMoodList = {
-      ...moodList,
-      [index]: {
-        ...mood,
-        isCare: !mood.isCare,
-      },
+    if (isCare) {
+      return alert('Error', 'You already care this mood!', [{ text: 'Ok' }])
     }
 
-    setMoodList(Object.values(newMoodList))
+    history.push(pathRoutes.Takecare.path, {
+      ...mood,
+    })
+
+    // await firebase
+    //   .database()
+    //   .ref('/users/' + uid + '/mood/' + mood.key)
+    //   .set({
+    //     ...mood,
+    //     isCare: !mood.isCare,
+    //   })
+    //
+    // const newMoodList = {
+    //   ...moodList,
+    //   [index]: {
+    //     ...mood,
+    //     isCare: !mood.isCare,
+    //   },
+    // }
+    //
+    // setMoodList(Object.values(newMoodList))
   }
 
   const onTalkAbout = async (mood, index) => {
@@ -184,33 +193,41 @@ const Home = () => {
 
   useEffect(() => {
     const getMood = async () => {
-      const ref = await firebase
-        .database()
-        .ref('users/')
-        .once('value')
+      try {
+        const { uid } = firebase.auth().currentUser
 
-      const users = ref && ref.val()
-      const moodList = Object.values(users).reduce((result, user) => {
-        let userMood = []
-        if (user.mood) {
-          userMood = Object.entries(user.mood).map(([key, mood]) => {
-            return {
-              key,
-              display: user.display,
-              email: user.email,
-              imgUrl: user.imgUrl,
-              tel: user.tel,
-              ...mood,
-            }
-          })
-        }
+        const ref = await firebase
+          .database()
+          .ref('users/')
+          .once('value')
 
-        result = [...result, ...userMood]
-        return result
-      }, [])
+        const users = ref && ref.val()
+        const moodList = Object.values(users).reduce((result, user) => {
+          let userMood = []
+          if (user.mood) {
+            userMood = Object.entries(user.mood).map(([key, mood]) => {
+              return {
+                key,
+                display: user.display,
+                email: user.email,
+                imgUrl: user.imgUrl,
+                tel: user.tel,
+                userID: user.uid,
+                isCare: mood.caresBy && mood.caresBy[uid],
+                ...mood,
+              }
+            })
+          }
 
-      moodList.sort((a, b) => b.createdAt - a.createdAt)
-      setMoodList(moodList)
+          result = [...result, ...userMood]
+          return result
+        }, [])
+
+        moodList.sort((a, b) => b.createdAt - a.createdAt)
+        setMoodList(moodList)
+      } catch ({ message }) {
+        alert('Error', message, [{ text: 'Ok' }])
+      }
     }
 
     const getUserData = async () => {
@@ -232,7 +249,7 @@ const Home = () => {
       <ContentImage {...mood.color} />
       <ContentDescription>{mood.description}</ContentDescription>
       <ActionButtonWrapper>
-        <ActionButton onClick={() => onTakeCare(mood, index)}>
+        <ActionButton onClick={() => onTakeCare(mood, index, mood.isCare)}>
           <ActionIcon src={!mood.isCare ? ICON_TAKECARE : ICON_TAKECARE_ACTIVE} />
           Take care
         </ActionButton>

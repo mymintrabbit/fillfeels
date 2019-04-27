@@ -15,12 +15,14 @@ import ICON_TAKECARE from '../assets/icon_profile_takecare.svg'
 import ICON_TAKECARE_ACTIVE from '../assets/icon_profile_takecare_active.svg'
 import ICON_TABLINE from '../assets/icon_profile_tabline.svg'
 import ICON_PROFILE_BORDER from '../assets/icon_profile_avatar_border.svg'
+import ICON_PROFILE_BORDER_SMALL from '../assets/icon_profile_avatar_border_small.svg'
 import ICON_UPDATE from '../assets/icon_update.svg'
 import ICON_UPDATE_WHITE from '../assets/icon_update_white.svg'
 import ICON_PROFILE_EMPTY from '../assets/icon_profile_empty.svg'
 import Dot from '../components/Dot'
 import moment from 'moment'
 import { mapHueToRangeColor } from '../color-picker/utils'
+import { getDateDiff } from '../utils'
 
 export const styles = {
   dotStyle: {
@@ -48,8 +50,8 @@ const Layout = styled.div`
 
 const Avatar = styled.img`
   display: block;
-  width: 85px;
-  height: 85px;
+  width: ${props => props.width || '85'}px;
+  height: ${props => props.width || '85'}px;
 
   margin: 0 auto;
   border-radius: 50%;
@@ -62,6 +64,22 @@ const AvatarWrapper = styled.div`
 
   padding: 5px 15px 5px 5px;
   background-image: url(${ICON_PROFILE_BORDER});
+`
+
+const AvatarWrapperSmall = styled(AvatarWrapper)`
+  position: unset;
+  padding: 2px 5px 3px 3px;
+  background-image: url(${ICON_PROFILE_BORDER_SMALL});
+`
+
+const AvatarDetailsLine = styled.div`
+  content: '';
+  border: 1px solid black;
+  height: 0;
+  width: 100%;
+  top: 16px;
+  display: flex;
+  position: relative;
 `
 
 const MenuWrapper = styled.div`
@@ -244,15 +262,49 @@ const EmptyTakeCareWrapper = styled.div`
   margin: 4em;
 `
 
+const CareLinkWrapper = styled.div`
+  margin: 2em 0;
+`
+
+const CareItemWrapper = styled.img`
+  width: 100%;
+  max-height: 200px;
+  margin-bottom: 1em;
+`
+
+const ProfileDetailsWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 36px auto 30px;
+`
+
+const AvatarDetailsWrapper = styled.div`
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+`
+
+const AvatarDetailsUser = styled.div`
+  margin-left: 5px;
+  font-size: 12px;
+`
+
+const AvatarDetailsTime = styled.div`
+  font-size: 12px;
+  margin-right: 5px;
+  color: gray;
+`
+
 const Profile = ({ history, ...props }) => {
   const [imgUrl, setImgUrl] = useState(NO_AVATAR_IMG_URL)
   const [displayName, setDisplayName] = useState('Profile')
-  const [activeTab, setActiveTab] = useState(1)
+  const [activeTab, setActiveTab] = useState(3)
   const [userMoodList, setUserMoodList] = useState([[{ date: moment().date(), isEmpty: true }]])
   const [userLastMood, setUserLastMood] = useState({})
   const [userMoodLength, setUserMoodLength] = useState(0)
   const [currentMonth] = useState(moment().format('MMMM'))
   const [userMoodListYear, setUserMoodListYear] = useState([])
+  const [userTakecare, setUserTakecare] = useState([])
 
   const getCurrentUserData = async () => {
     try {
@@ -329,12 +381,17 @@ const Profile = ({ history, ...props }) => {
           }, {}),
         }))
 
-      console.log(moodListYear)
+      const userTakecare = Object.values(mood).reduce((result, mood) => {
+        const moodCaresBy = mood.caresBy || {}
+        result = [...result, ...Object.values(moodCaresBy)]
+        return result
+      }, [])
 
       setUserMoodListYear(moodListYear)
       setUserMoodLength(moodListMonth.length)
       setUserLastMood(lastMood)
       setUserMoodList(moodListCurrentMonth)
+      setUserTakecare(userTakecare)
     } catch ({ message }) {
       alert('Error', message, [{ text: 'Ok' }])
     }
@@ -420,6 +477,30 @@ const Profile = ({ history, ...props }) => {
     </MonthBoxWrapper>
   )
 
+  const takecareItems = (userTakecare.length > 0 &&
+    userTakecare.map((care, index) => (
+      <CareLinkWrapper key={index}>
+        <CareItemWrapper src={care.careUrl} />
+        <ProfileDetailsWrapper>
+          <AvatarWrapperSmall>
+            <Avatar src={care.imgUrl} width="30" height="30" />
+          </AvatarWrapperSmall>
+          <Wrapper>
+            <AvatarDetailsLine />
+            <AvatarDetailsWrapper>
+              <AvatarDetailsUser>{care.display}</AvatarDetailsUser>
+              <AvatarDetailsTime>{getDateDiff(care.createdAt)}</AvatarDetailsTime>
+            </AvatarDetailsWrapper>
+          </Wrapper>
+          <Dot width="30px" height={'30px'} />
+        </ProfileDetailsWrapper>
+      </CareLinkWrapper>
+    ))) || (
+    <EmptyTakeCareWrapper>
+      <img src={ICON_PROFILE_EMPTY} alt={'empty'} />
+    </EmptyTakeCareWrapper>
+  )
+
   return (
     <Layout>
       <Navbar>{displayName}</Navbar>
@@ -476,13 +557,7 @@ const Profile = ({ history, ...props }) => {
           </Wrapper>
         )}
         {activeTab === 2 && <Wrapper>{TimelineYearItems}</Wrapper>}
-        {activeTab === 3 && (
-          <Wrapper>
-            <EmptyTakeCareWrapper>
-              <img src={ICON_PROFILE_EMPTY} alt={'empty'} />
-            </EmptyTakeCareWrapper>
-          </Wrapper>
-        )}
+        {activeTab === 3 && <Wrapper>{takecareItems}</Wrapper>}
       </TabContent>
     </Layout>
   )

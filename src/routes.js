@@ -9,6 +9,7 @@ import ProfilePage from './pages/profile'
 import TalkPage from './pages/talk'
 import TalkChatPage from './pages/talk-chat'
 import LoginPage from './pages/login'
+import TakecarePage from './pages/takecare'
 
 export const pathRoutes = {
   UpdateStepOne: {
@@ -47,6 +48,10 @@ export const pathRoutes = {
     path: '/login',
     component: LoginPage,
   },
+  Takecare: {
+    path: '/takecare',
+    component: TakecarePage,
+  }
 }
 
 export const Routes = Object.values(pathRoutes).map(route => (

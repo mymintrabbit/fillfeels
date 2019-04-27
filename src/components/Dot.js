@@ -4,6 +4,7 @@ import { getGradient, mapHueToColor } from '../color-picker/utils'
 const Dot = styled.div`
   display: block;
   border-radius: 50%;
+  z-index: 99;
 
   width: ${props => props.width};
   height: ${props => props.height};
