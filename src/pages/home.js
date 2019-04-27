@@ -124,10 +124,10 @@ const GiveCall = styled.img`
   width: 100%;
 `
 
-const GiveCallText = styled.div`
+const GiveCallText = styled.a`
   position: relative;
   top: -1.75em;
-  color: white;
+  color: white !important;
 `
 
 const Home = ({ history }) => {
@@ -261,7 +261,7 @@ const Home = ({ history }) => {
         </ActionButton>
       </ActionButtonWrapper>
       <GiveCall src={Expand} />
-      <GiveCallText>Give a call</GiveCallText>
+      <GiveCallText href={`tel:${mood.tel}`}>Give a call</GiveCallText>
     </ContentItem>
   ))
 
