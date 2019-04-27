@@ -480,7 +480,11 @@ const Profile = ({ history, ...props }) => {
   const takecareItems = (userTakecare.length > 0 &&
     userTakecare.map((care, index) => (
       <CareLinkWrapper key={index}>
-        <CareItemWrapper src={care.careUrl} />
+        {care.isLink ? (
+          <iframe width="640" height="300" src={care.careUrl.replace('watch?v=', 'embed/')} />
+        ) : (
+          <CareItemWrapper src={care.careUrl} />
+        )}
         <ProfileDetailsWrapper>
           <AvatarWrapperSmall>
             <Avatar src={care.imgUrl} width="30" height="30" />
@@ -492,7 +496,7 @@ const Profile = ({ history, ...props }) => {
               <AvatarDetailsTime>{getDateDiff(care.createdAt)}</AvatarDetailsTime>
             </AvatarDetailsWrapper>
           </Wrapper>
-          <Dot width="30px" height={'30px'} />
+          <Dot width="30px" height={'30px'} {...care.color} />
         </ProfileDetailsWrapper>
       </CareLinkWrapper>
     ))) || (

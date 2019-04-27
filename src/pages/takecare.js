@@ -75,6 +75,7 @@ const takecare = ({ location }) => {
                 display: userData.display,
                 imgUrl: userData.imgUrl,
                 isLink: true,
+                color: userMood.color,
               },
             }
 
