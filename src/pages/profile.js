@@ -481,7 +481,7 @@ const Profile = ({ history, ...props }) => {
     userTakecare.map((care, index) => (
       <CareLinkWrapper key={index}>
         {care.isLink ? (
-          <iframe width="640" height="300" src={care.careUrl.replace('watch?v=', 'embed/')} />
+          <iframe title="youtube-iframe" width="640" height="300" src={care.careUrl.replace('watch?v=', 'embed/')} />
         ) : (
           <CareItemWrapper src={care.careUrl} />
         )}
