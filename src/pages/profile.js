@@ -301,6 +301,7 @@ const Profile = ({ history, ...props }) => {
   const [activeTab, setActiveTab] = useState(3)
   const [userMoodList, setUserMoodList] = useState([[{ date: moment().date(), isEmpty: true }]])
   const [userLastMood, setUserLastMood] = useState({})
+  const [userPoint, setUserPoint] = useState(0)
   const [userMoodLength, setUserMoodLength] = useState(0)
   const [currentMonth] = useState(moment().format('MMMM'))
   const [userMoodListYear, setUserMoodListYear] = useState([])
@@ -316,6 +317,7 @@ const Profile = ({ history, ...props }) => {
       const userData = data.val()
       setImgUrl(userData.imgUrl)
       setDisplayName(userData.display)
+      setUserPoint(userData.point || 0)
 
       const { mood = {}, lastMood = {} } = userData
 
@@ -386,6 +388,8 @@ const Profile = ({ history, ...props }) => {
         result = [...result, ...Object.values(moodCaresBy)]
         return result
       }, [])
+
+      userTakecare.sort((a, b) => b.createdAt - a.createdAt)
 
       setUserMoodListYear(moodListYear)
       setUserMoodLength(moodListMonth.length)
@@ -481,7 +485,12 @@ const Profile = ({ history, ...props }) => {
     userTakecare.map((care, index) => (
       <CareLinkWrapper key={index}>
         {care.isLink ? (
-          <iframe title="youtube-iframe" width="640" height="300" src={care.careUrl.replace('watch?v=', 'embed/')} />
+          <iframe
+            title="youtube-iframe"
+            width="640"
+            height="300"
+            src={care.careUrl.replace('watch?v=', 'embed/')}
+          />
         ) : (
           <CareItemWrapper src={care.careUrl} />
         )}
@@ -519,6 +528,7 @@ const Profile = ({ history, ...props }) => {
             <AlignBottom>
               <img alt="icon_care" src={ICON_CARE} />
             </AlignBottom>
+            <Wrapper>{userPoint}</Wrapper>
           </MenuWrapper>
         </AvatarWrapper>
       </Wrapper>

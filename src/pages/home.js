@@ -95,6 +95,7 @@ const ActionButtonWrapper = styled.div`
   padding: 10px 0;
   border-top: 1px solid gray;
   border-bottom: 1px solid gray;
+  max-height: 50px;
 `
 
 const ActionButton = styled.div`
@@ -133,6 +134,7 @@ const GiveCallText = styled.a`
 const Home = ({ history }) => {
   const [moodList, setMoodList] = useState([])
   const [uid, SetUid] = useState(null)
+  const [userPoint, setUserPoint] = useState(0)
 
   const onTakeCare = async (mood, index, isCare) => {
     if (!uid) {
@@ -143,6 +145,17 @@ const Home = ({ history }) => {
     if (isCare) {
       return alert('Error', 'You already care this mood!', [{ text: 'Ok' }])
     }
+
+    if (userPoint - 2 < 0) {
+      return alert('Error', 'Takecare required 2 point. Please update your mood to get the point', [
+        { text: 'Ok' },
+      ])
+    }
+
+    await firebase
+      .database()
+      .ref('/users/' + uid + '/point/')
+      .set(userPoint - 2)
 
     history.push(pathRoutes.Takecare.path, {
       ...mood,
@@ -167,11 +180,25 @@ const Home = ({ history }) => {
     // setMoodList(Object.values(newMoodList))
   }
 
-  const onTalkAbout = async (mood, index) => {
+  const onTalkAbout = async (mood, index, isTalk) => {
     if (!uid) {
       return alert('Error', 'Session is expired please login again', [{ text: 'Ok' }])
       // if no user data then we return
     }
+
+    if (isTalk) {
+      return alert('Error', 'You already talk about this mood!', [{ text: 'Ok' }])
+    }
+
+    if (userPoint - 2 < 0) {
+      return alert(
+        'Error',
+        'Talk about required 2 point. Please update your mood to get the point',
+        [{ text: 'Ok' }],
+      )
+    }
+
+    console.log(mood)
 
     await firebase
       .database()
@@ -180,6 +207,19 @@ const Home = ({ history }) => {
         ...mood,
         isTalk: !mood.isTalk,
       })
+    console.log('pass')
+
+    await firebase
+      .database()
+      .ref('/users/' + mood.userID + '/lastMood/')
+      .set({
+        ...mood,
+      })
+
+    await firebase
+      .database()
+      .ref('/users/' + uid + '/point/')
+      .set(userPoint - 2)
 
     const newMoodList = {
       ...moodList,
@@ -190,6 +230,7 @@ const Home = ({ history }) => {
     }
 
     setMoodList(Object.values(newMoodList))
+    return alert('Complete', 'You use 2 point to talk about this.', [{ text: 'Ok' }])
   }
 
   useEffect(() => {
@@ -203,6 +244,9 @@ const Home = ({ history }) => {
           .once('value')
 
         const users = ref && ref.val()
+        const userPoint = users[uid].point || 0
+        setUserPoint(userPoint)
+
         const moodList = Object.values(users).reduce((result, user) => {
           let userMood = []
           if (user.mood) {
@@ -214,7 +258,7 @@ const Home = ({ history }) => {
                 imgUrl: user.imgUrl,
                 tel: user.tel,
                 userID: user.uid,
-                isCare: mood.caresBy && mood.caresBy[uid],
+                isCare: (mood.caresBy && mood.caresBy[uid]) || false,
                 ...mood,
               }
             })
@@ -255,7 +299,7 @@ const Home = ({ history }) => {
           Take care
         </ActionButton>
         <VerticalLine />
-        <ActionButton onClick={() => onTalkAbout(mood, index)}>
+        <ActionButton onClick={() => onTalkAbout(mood, index, mood.isTalk)}>
           <ActionIcon src={!mood.isTalk ? ICON_TALK : ICON_TALK_ACTIVE} />
           Talk about
         </ActionButton>

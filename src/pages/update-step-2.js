@@ -57,6 +57,7 @@ const UpdateStep2 = props => {
   const [imgUrl, setImgUrl] = useState(NO_AVATAR_IMG_URL)
   const [userID, setUserID] = useState(null)
   const [description, setDescription] = useState('')
+  const [userPoint, setUserPoint] = useState(0)
 
   const getCurrentUserImg = async () => {
     try {
@@ -66,8 +67,10 @@ const UpdateStep2 = props => {
         .ref('/users/' + uid)
         .once('value')
       const url = data.val() && data.val().imgUrl
+      const point = data.val() && data.val().point
       setUserID(uid)
       setImgUrl(url)
+      setUserPoint(point || 0)
     } catch ({ message }) {
       alert('Error', message, [{ text: 'Ok' }])
     }
@@ -94,11 +97,14 @@ const UpdateStep2 = props => {
         .ref('/users/' + userID + '/mood')
         .push(mood)
 
+      const newPoint = userPoint + 3
+
       await firebase
         .database()
-        .ref('/users/' + userID + '/lastMood')
-        .set(mood)
+        .ref('/users/' + userID + '/point')
+        .set(newPoint)
 
+      alert('Complete', 'You got 3 point from update mood', [{ text: 'Ok' }])
       props.history.push(pathRoutes.Home.path)
     } catch ({ message }) {
       alert('Error', message, [{ text: 'Ok' }])
