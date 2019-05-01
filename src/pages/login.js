@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import styled, { keyframes } from 'styled-components'
-import { Button, InputItem, Modal } from 'antd-mobile'
+import styled from 'styled-components'
+import {  InputItem, Modal } from 'antd-mobile'
 import { pathRoutes } from '../routes'
 import firebase from 'firebase'
 import { NO_AVATAR_IMG_URL } from '../config'
@@ -148,7 +148,7 @@ const Login = ({ history, ...props }) => {
       {isLogin ? (
         <React.Fragment>
           <Header>
-            <img src={LOGO} />
+            <img src={LOGO} alt={"logo"} />
           </Header>
           <FieldGroup>
             <Wrapper>
@@ -171,7 +171,7 @@ const Login = ({ history, ...props }) => {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <img src={LOGO} />
+          <img src={LOGO} alt={"logo"}/>
           <SignUpStateWrapper>
             <Wrapper>
               <InputItem placeholder="Email" onChange={value => setEmail(value)} value={email} />

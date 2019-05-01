@@ -59,14 +59,6 @@ const Tapping = styled.div`
   z-index: 99;
 `
 
-const TapButton = styled.div`
-  border-radius: 50px;
-  padding: 1em;
-  color: gray;
-  border: 3px solid gray;
-  background: transparent;
-`
-
 const TakeCareButtonImage = styled.img`
   object-fit: cover;
 `
@@ -323,7 +315,7 @@ const takecare = ({ location, history }) => {
       <ImageStorage src={storage.url} />{' '}
       {storage.isTapped ? (
         <Tapping>
-          <TakeCareButtonImage src={ICON_TAKECARE_BTN} onClick={() => onSendasCare(index)}/>
+          <TakeCareButtonImage src={ICON_TAKECARE_BTN} onClick={() => onSendasCare(index)} />
         </Tapping>
       ) : null}
     </ImageWrapper>
