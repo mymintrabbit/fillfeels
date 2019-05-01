@@ -270,6 +270,7 @@ const CareItemWrapper = styled.img`
   width: 100%;
   max-height: 200px;
   margin-bottom: 1em;
+  object-fit: cover;
 `
 
 const ProfileDetailsWrapper = styled.div`
@@ -298,7 +299,7 @@ const AvatarDetailsTime = styled.div`
 const Profile = ({ history, ...props }) => {
   const [imgUrl, setImgUrl] = useState(NO_AVATAR_IMG_URL)
   const [displayName, setDisplayName] = useState('Profile')
-  const [activeTab, setActiveTab] = useState(3)
+  const [activeTab, setActiveTab] = useState(1)
   const [userMoodList, setUserMoodList] = useState([[{ date: moment().date(), isEmpty: true }]])
   const [userLastMood, setUserLastMood] = useState({})
   const [userPoint, setUserPoint] = useState(0)
@@ -487,7 +488,7 @@ const Profile = ({ history, ...props }) => {
         {care.isLink ? (
           <iframe
             title="youtube-iframe"
-            width="640"
+            width="320"
             height="300"
             src={care.careUrl.replace('watch?v=', 'embed/')}
           />

@@ -1,62 +1,73 @@
 import React, { Component } from 'react'
-import '@radial-color-picker/react-color-picker/dist/react-color-picker.umd.min.css'
-import ColorPicker from '../color-picker/react-color-picker'
 import styled from 'styled-components'
 import Navbar from '../components/Navbar'
 import { pathRoutes } from '../routes'
+import CircularColorPicker from '../color-picker/CircularColorPicker'
+import Dot from '../components/Dot'
+import { COLOR_MAPPING } from '../config'
+import { getGradient } from '../color-picker/utils'
+
+const Wrapper = styled.div``
 
 const LayoutWrapper = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  flex: 1;
   position: relative;
   max-width: 375px;
 `
 
-const ButtonWrapper = styled.div`
-  margin-top: 400px;
+const MoodHeader = styled.div`
+  background: black;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 45px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  padding: 1.25em;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
 `
 
-const AddColorButton = styled.div`
-  text-align: center;
+const MoodHeaderItem = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   color: white;
-  padding: 0.5em;
-  cursor: pointer;
-  border-radius: 50%;
-  border: 3px solid white;
-  font-size: 1.5em;
-  width: 40px;
-  height: 40px;
-  background: #64cc9a;
-
-  ${props =>
-    props.disabled &&
-    `
-    opacity: 0.4;
-  `}
 `
 
-const MoodText = styled.div`
-  color: #5f5f5f;
-  font-size: ${props => (props.isSmall ? 12 : 14)}px;
+const ColorPickerWrapper = styled.div`
+  max-width: 375px;
+`
+
+const ColorBackground = styled.div`
+  bottom: 50px;
   position: absolute;
-  transform: rotate(${props => props.degree}deg);
-  top: ${props => props.top}px;
-  left: ${props => props.left}px;
-  right: ${props => props.right}px;
+  width: 100%;
+  height: 50%;
+  background: ${props => props.background || `${COLOR_MAPPING.GREEN}`};
+`
+
+const CircleBackground = styled.div`
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  display: block;
+  background: white;
+  border-radius: 50%;
 `
 
 class UpdateStep1 extends Component {
   state = {
-    hue: 90,
-    saturation: 100,
-    luminosity: 50,
-    alpha: 1,
-    isGradient: false,
+    hue: 226,
+    hue2: 215,
+    isGradient: true,
   }
 
   componentDidMount() {
@@ -67,16 +78,12 @@ class UpdateStep1 extends Component {
     }
   }
 
-  onChange = ({ hue, saturation, luminosity, alpha, x, y }) => {
-    this.setState({ hue, saturation, luminosity, alpha, x, y })
+  onChange = hue => {
+    this.setState({ hue })
   }
 
-  onChange2 = ({ hue }) => {
+  onChange2 = hue => {
     this.setState({ hue2: hue })
-  }
-
-  onAdd = () => {
-    this.setState({ isGradient: true })
   }
 
   onNext = () => {
@@ -86,48 +93,45 @@ class UpdateStep1 extends Component {
   }
 
   render() {
-    const { isGradient } = this.state
-    const width = window.innerWidth
-    let w = 0
-    let isSmall = false
-    if (width < 350) {
-      w = 15
-      isSmall = true
-    }
+    const { hue, hue2 } = this.state
 
     return (
       <React.Fragment>
         <Navbar rightContent={<div onClick={() => this.onNext()}>Next</div>}>
-          Update Your Mood
+          How do you feel?
         </Navbar>
         <LayoutWrapper>
-          <ColorPicker {...this.state} onChange={this.onChange} />
-          {isGradient && <ColorPicker {...this.state} onChange={this.onChange2} />}
-          <MoodText degree={-120} top={310} left={15 - w} isSmall={isSmall}>
-            ANGRY
-          </MoodText>
-          <MoodText degree={-80} top={200} left={0 - w} isSmall={isSmall}>
-            IN LOVE
-          </MoodText>
-          <MoodText degree={-30} top={80} left={80 - w} isSmall={isSmall}>
-            HAPPY
-          </MoodText>
-          <MoodText degree={28} top={80} right={80 - w} isSmall={isSmall}>
-            NEUTRAL
-          </MoodText>
-          <MoodText degree={85} top={200} right={10 - w} isSmall={isSmall}>
-            SAD
-          </MoodText>
-          <MoodText degree={120} top={310} right={3 - w} isSmall={isSmall}>
-            DISTRESS
-          </MoodText>
-          <ButtonWrapper>
-            {
-              <AddColorButton disabled={isGradient} onClick={() => this.onAdd()}>
-                &#10010;
-              </AddColorButton>
-            }
-          </ButtonWrapper>
+          <MoodHeader>
+            <MoodHeaderItem>
+              <Dot width="25px" height="25px" background={COLOR_MAPPING.GREEN} />
+              <Wrapper>Neutral</Wrapper>
+            </MoodHeaderItem>
+            <MoodHeaderItem>
+              <Dot width="25px" height="25px" background={COLOR_MAPPING.YELLOW} />
+              <Wrapper>Happy</Wrapper>
+            </MoodHeaderItem>
+            <MoodHeaderItem>
+              <Dot width="25px" height="25px" background={COLOR_MAPPING.PINK} />
+              <Wrapper>Love</Wrapper>
+            </MoodHeaderItem>
+            <MoodHeaderItem>
+              <Dot width="25px" height="25px" background={COLOR_MAPPING.RED} />
+              <Wrapper>Angry</Wrapper>
+            </MoodHeaderItem>
+            <MoodHeaderItem>
+              <Dot width="25px" height="25px" background={COLOR_MAPPING.BLUE} />
+              <Wrapper>Sad</Wrapper>
+            </MoodHeaderItem>
+            <MoodHeaderItem>
+              <Dot width="25px" height="25px" background={COLOR_MAPPING.BLUE_DARK} />
+              <Wrapper>Stress</Wrapper>
+            </MoodHeaderItem>
+          </MoodHeader>
+          <ColorPickerWrapper>
+            <CircularColorPicker onChange={this.onChange} onChange2={this.onChange2} />
+          </ColorPickerWrapper>
+          <ColorBackground background={getGradient(hue, hue2)} />
+          <CircleBackground />
         </LayoutWrapper>
       </React.Fragment>
     )

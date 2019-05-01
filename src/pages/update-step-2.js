@@ -53,7 +53,7 @@ const Layout = styled.div`
 `
 
 const UpdateStep2 = props => {
-  const { isGradient = false, hue = 0, hue2 = 0 } = props.location.state
+  const { isGradient = true, hue = 0, hue2 = 0 } = props.location.state
   const [imgUrl, setImgUrl] = useState(NO_AVATAR_IMG_URL)
   const [userID, setUserID] = useState(null)
   const [description, setDescription] = useState('')

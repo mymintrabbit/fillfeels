@@ -34,6 +34,7 @@ const ImageIcon = styled.img`
 const ImageStorage = styled.img`
   width: 100%;
   height: auto;
+  max-height: 400px;
   background-size: cover;
   object-fit: cover;
 `
@@ -69,12 +70,80 @@ const takecare = ({ location, history }) => {
   const [userMood, setUserMood] = useState(null)
   const [storageUrl, setStorageUrl] = useState([
     {
-      url: 'https://lorempixel.com/200/200',
+      url:
+        'https://firebasestorage.googleapis.com/v0/b/moodtracker-cu.appspot.com/o/Artboard%202%20copy%203%404x-100.jpg?alt=media&token=71448faa-57dd-4846-912d-e54489f43be9',
       isLink: false,
       isTapped: false,
     },
     {
-      url: 'https://lorempixel.com/200/200',
+      url:
+        'https://firebasestorage.googleapis.com/v0/b/moodtracker-cu.appspot.com/o/Artboard%202%20copy%204%404x-100.jpg?alt=media&token=2c0b4912-a16b-4632-a0c2-efc6d366e2b1',
+      isLink: false,
+      isTapped: false,
+    },
+    {
+      url:
+        'https://firebasestorage.googleapis.com/v0/b/moodtracker-cu.appspot.com/o/Artboard%202%20copy%205%404x-100.jpg?alt=media&token=d1ea38d4-433b-404f-9e75-701c83c7f399',
+      isLink: false,
+      isTapped: false,
+    },
+    {
+      url:
+        'https://firebasestorage.googleapis.com/v0/b/moodtracker-cu.appspot.com/o/Artboard%202%20copy%206%404x-100.jpg?alt=media&token=39d76faf-591a-4c7a-b0f4-a61b2d9d87a2',
+      isLink: false,
+      isTapped: false,
+    },
+    {
+      url:
+        'https://firebasestorage.googleapis.com/v0/b/moodtracker-cu.appspot.com/o/Artboard%202%20copy%207%404x-100.jpg?alt=media&token=4c0f7194-53db-482c-bf46-83d2018dffd5',
+      isLink: false,
+      isTapped: false,
+    },
+    {
+      url:
+        'https://firebasestorage.googleapis.com/v0/b/moodtracker-cu.appspot.com/o/Artboard%202%20copy%208%404x-100.jpg?alt=media&token=54c3c74e-b819-40bf-95b1-c7ce55b0dd5b',
+      isLink: false,
+      isTapped: false,
+    },
+    {
+      url:
+        'https://firebasestorage.googleapis.com/v0/b/moodtracker-cu.appspot.com/o/Artboard%202%20copy%209%404x-100.jpg?alt=media&token=c5d33401-ae66-41ec-af20-15bf8da288c0',
+      isLink: false,
+      isTapped: false,
+    },
+    {
+      url:
+        'https://firebasestorage.googleapis.com/v0/b/moodtracker-cu.appspot.com/o/Artboard%202%20copy%2010%404x-100.jpg?alt=media&token=17424a09-4c77-476f-90f7-1a35ebbdeb8f',
+      isLink: false,
+      isTapped: false,
+    },
+    {
+      url:
+        'https://firebasestorage.googleapis.com/v0/b/moodtracker-cu.appspot.com/o/Artboard%202%20copy%2011%404x-100.jpg?alt=media&token=1b758f85-41c2-45c7-9b62-b3da24c0d0b3',
+      isLink: false,
+      isTapped: false,
+    },
+    {
+      url:
+        'https://firebasestorage.googleapis.com/v0/b/moodtracker-cu.appspot.com/o/Artboard%202%20copy%2012%404x-100.jpg?alt=media&token=148f7e80-fea9-4673-97cd-68686110c74c',
+      isLink: false,
+      isTapped: false,
+    },
+    {
+      url:
+        'https://firebasestorage.googleapis.com/v0/b/moodtracker-cu.appspot.com/o/Artboard%202%20copy%2013%404x-100.jpg?alt=media&token=60a9fd8f-3b21-4397-8c12-8f34b9f3f039',
+      isLink: false,
+      isTapped: false,
+    },
+    {
+      url:
+        'https://firebasestorage.googleapis.com/v0/b/moodtracker-cu.appspot.com/o/Artboard%202%20copy%2014%404x-100.jpg?alt=media&token=2f4a767e-051a-4780-919c-00b67f7ac761',
+      isLink: false,
+      isTapped: false,
+    },
+    {
+      url:
+        'https://firebasestorage.googleapis.com/v0/b/moodtracker-cu.appspot.com/o/Artboard%202%404x-100.jpg?alt=media&token=e70f89c4-f9dc-4f73-8e55-60c9ea2af911',
       isLink: false,
       isTapped: false,
     },
@@ -155,7 +224,7 @@ const takecare = ({ location, history }) => {
           careUrl: storageUrl[index].url,
           display: userData.display,
           imgUrl: userData.imgUrl,
-          isLink: true,
+          isLink: storageUrl[index].isLink,
           color: userMood.color,
         },
       }
