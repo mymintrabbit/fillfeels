@@ -160,7 +160,7 @@ const ProfileEdit = ({ history, ...props }) => {
       <GridField>
         <div>Email</div>
         <InputItem disabled value={email} onChange={setEmail} />
-        <div>display</div>
+        <div>Username</div>
         <InputItem value={displayName} onChange={setDisplayName} />
         <div>Phone</div>
         <InputItem value={tel} onChange={setTel} />

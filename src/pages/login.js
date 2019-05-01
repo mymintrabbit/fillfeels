@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { Button, InputItem, Modal } from 'antd-mobile'
 import { pathRoutes } from '../routes'
 import firebase from 'firebase'
 import { NO_AVATAR_IMG_URL } from '../config'
+import LOGO from '../assets/logo.svg'
+import SIGN_UP_BTN from '../assets/sign_up_btn.svg'
 
 const alert = Modal.alert
 
@@ -14,22 +16,31 @@ const FieldGroup = styled.div`
   flex-direction: column;
   margin-bottom: 1.5em;
   text-align: left;
+  box-sizing: border-box;
+  border: 1px solid gray;
+  border-radius: 25px;
+  margin: 10px;
+  margin-bottom: 0;
+  padding: 1em;
+
+  > * {
+    border-bottom: 1px solid #efefef;
+  }
 `
 
-const FieldTitle = styled.div`
-  margin-bottom: 0.5em;
+const LoginButton = styled.div`
+  display: block;
+  margin: 0 auto;
+  background: black;
+  width: 200px;
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  color: white;
 `
 
 const Header = styled.div`
   font-size: 2.5em;
-  margin-bottom: 1em;
-`
-
-const SubHeader = styled.div`
-  font-size: 1.25em;
-  margin-bottom: 2.5em;
-  text-align: left;
-  font-weight: bold;
+  margin-bottom: 3em;
 `
 
 const Layout = styled.div`
@@ -38,32 +49,55 @@ const Layout = styled.div`
   width: 100%;
   justify-content: flex-start;
   align-items: center;
-  padding: 3em;
+  padding-top: 4em;
   box-sizing: border-box;
-  background: #f5f5f5;
+  background: white;
 `
 
-const HorizontalLine = styled.div`
-  margin: 1em 0;
-  display: flex;
+const SignUpActionWrapper = styled.div`
+  position: absolute;
+  bottom: 0;
   width: 100%;
+  height: 25%;
+  background: black;
+  border-top-right-radius: 25px;
+  border-top-left-radius: 25px;
+  padding: 5px;
+  box-sizing: border-box;
+`
 
-  &:before,
-  &:after {
-    content: '';
-    width: 100%;
-    display: block;
-    border-bottom: 1px solid #cfcfcf;
-    margin: 10px;
+const SignUpStateWrapper = styled(SignUpActionWrapper)`
+  height: 80%;
+  padding: 2.5em;
+
+  * {
+    color: white !important;
   }
 
-  &:before {
-    margin-left: 0;
+  .am-list-item {
+    background: black;
+    border-bottom: 1px solid gray;
+    margin-bottom: 1em;
   }
+`
 
-  &:after {
-    margin-right: 0;
-  }
+const SignUpText = styled.div`
+  text-align: center;
+  color: white;
+  border-bottom: 1px solid gray;
+  padding: 5px;
+  box-sizing: border-box;
+`
+
+const SignUpBtn = styled.img`
+  width: 100%;
+`
+
+const SignUpStateBtn = styled.img`
+  width: 100%;
+  position: absolute;
+  bottom: 20%;
+  left: 0;
 `
 
 const Login = ({ history, ...props }) => {
@@ -73,20 +107,7 @@ const Login = ({ history, ...props }) => {
   const [tel, setTel] = useState('')
   const [displayName, setDisplayName] = useState('')
 
-  useEffect(() => {
-    const isAuth = async () => {
-      const user = await firebase.auth().currentUser
-      console.log(user)
-
-      if (user) {
-        console.log('SIGN IN')
-      } else {
-        console.log('NOT SIGN IN')
-      }
-    }
-
-    isAuth()
-  }, [])
+  useEffect(() => {}, [])
 
   const onSubmitClick = async () => {
     if (isLogin) {
@@ -124,66 +145,67 @@ const Login = ({ history, ...props }) => {
 
   return (
     <Layout>
-      <Header> Mood Tracker </Header>
-      <SubHeader>{isLogin ? 'Login' : 'Register'}</SubHeader>
-      <FieldGroup>
-        <FieldTitle>Email</FieldTitle>
-        <Wrapper>
-          <InputItem placeholder="email" onChange={value => setEmail(value)} value={email} />
-        </Wrapper>
-      </FieldGroup>
-      <FieldGroup>
-        <FieldTitle>Password</FieldTitle>
-        <Wrapper>
-          <InputItem
-            placeholder="password"
-            type="password"
-            onChange={value => setPassword(value)}
-            value={password}
-          />
-        </Wrapper>
-      </FieldGroup>
-      {!isLogin && (
-        <FieldGroup>
-          <FieldTitle>Tel</FieldTitle>
-          <Wrapper>
-            <InputItem
-              placeholder="089 123 4567"
-              type="phone"
-              onChange={value => setTel(value)}
-              value={tel}
-            />
-          </Wrapper>
-        </FieldGroup>
+      {isLogin ? (
+        <React.Fragment>
+          <Header>
+            <img src={LOGO} />
+          </Header>
+          <FieldGroup>
+            <Wrapper>
+              <InputItem placeholder="Email" onChange={value => setEmail(value)} value={email} />
+            </Wrapper>
+            <Wrapper>
+              <InputItem
+                placeholder="Password"
+                type="password"
+                onChange={value => setPassword(value)}
+                value={password}
+              />
+            </Wrapper>
+          </FieldGroup>
+          <LoginButton onClick={onSubmitClick}>Log in</LoginButton>
+          <SignUpActionWrapper>
+            <SignUpText>Don't have an account ?</SignUpText>
+            <SignUpBtn src={SIGN_UP_BTN} onClick={() => setIsLogin(false)} />
+          </SignUpActionWrapper>
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          <img src={LOGO} />
+          <SignUpStateWrapper>
+            <Wrapper>
+              <InputItem placeholder="Email" onChange={value => setEmail(value)} value={email} />
+            </Wrapper>
+            <Wrapper>
+              <InputItem
+                placeholder="Username"
+                onChange={value => setDisplayName(value)}
+                value={displayName}
+              />
+            </Wrapper>
+            <Wrapper>
+              <InputItem placeholder="ID" />
+            </Wrapper>
+            <Wrapper>
+              <InputItem
+                placeholder="Phone Number"
+                type="phone"
+                onChange={value => setTel(value)}
+                value={tel}
+              />
+            </Wrapper>
+            <Wrapper>
+              <InputItem
+                placeholder="Password"
+                type="password"
+                onChange={value => setPassword(value)}
+                value={password}
+              />
+            </Wrapper>
+            <SignUpStateBtn src={SIGN_UP_BTN} onClick={onSubmitClick} />
+          </SignUpStateWrapper>
+        </React.Fragment>
       )}
-      {!isLogin && (
-        <FieldGroup>
-          <FieldTitle>Display name</FieldTitle>
-          <Wrapper>
-            <InputItem
-              placeholder="name"
-              onChange={value => setDisplayName(value)}
-              value={displayName}
-            />
-          </Wrapper>
-        </FieldGroup>
-      )}
-      <Button type="primary" onClick={onSubmitClick}>
-        {isLogin ? 'Login' : 'Register'}
-      </Button>
-      <HorizontalLine>or</HorizontalLine>
-      <Button
-        onClick={() =>
-          setIsLogin(prevState => {
-            setEmail('')
-            setPassword('')
-            setTel('')
-            return !prevState
-          })
-        }
-      >
-        {isLogin ? 'Register' : 'Login'}{' '}
-      </Button>
     </Layout>
   )
 }

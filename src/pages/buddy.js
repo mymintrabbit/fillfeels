@@ -60,6 +60,9 @@ const Avatar = styled.img`
 `
 
 const MyIcon = styled.img`
+  ${props => props.close && 'position: absolute'};
+  top: 20px;
+  right: 20px;
   width: ${props => props.size || 22}px;
   height: ${props => props.size || 22}px;
 `
@@ -72,9 +75,12 @@ const BuddyBox = styled.div`
   height: 250px;
   justify-content: center;
   align-items: center;
+  position: relative;
 `
 
 const AddBuddyBox = styled.div`
+  color: white;
+  background: black;
   border-radius: 20px;
   border: 1px solid black;
   margin: 30px 5%;
@@ -263,6 +269,7 @@ class Buddy extends React.Component {
               )}
 
               <MyIcon
+                close
                 src={close}
                 size={18}
                 onClick={() => this.triggerBuddyBox(this.state.selectedBuddy)}

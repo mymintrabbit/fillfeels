@@ -97,6 +97,11 @@ const UpdateStep2 = props => {
         .ref('/users/' + userID + '/mood')
         .push(mood)
 
+      await firebase
+        .database()
+        .ref('/users/' + userID + '/lastMood')
+        .set(mood)
+
       const newPoint = userPoint + 3
 
       await firebase

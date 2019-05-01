@@ -17,8 +17,7 @@ const alert = Modal.alert
 
 const Layout = styled.div`
   flex: 1;
-  padding: 1.5em;
-  padding-top: 60px;
+  padding: 60px 1.5em 1.5em;
   width: 100%;
   box-sizing: border-box;
 `
@@ -198,16 +197,13 @@ const Home = ({ history }) => {
       )
     }
 
-    console.log(mood)
-
     await firebase
       .database()
-      .ref('/users/' + uid + '/mood/' + mood.key)
+      .ref('/users/' + mood.userID + '/mood/' + mood.key)
       .set({
         ...mood,
         isTalk: !mood.isTalk,
       })
-    console.log('pass')
 
     await firebase
       .database()
@@ -259,6 +255,7 @@ const Home = ({ history }) => {
                 tel: user.tel,
                 userID: user.uid,
                 isCare: (mood.caresBy && mood.caresBy[uid]) || false,
+                withAction: user.uid !== uid,
                 ...mood,
               }
             })
@@ -267,7 +264,7 @@ const Home = ({ history }) => {
           result = [...result, ...userMood]
           return result
         }, [])
-
+console.log(moodList)
         moodList.sort((a, b) => b.createdAt - a.createdAt)
         setMoodList(moodList)
       } catch ({ message }) {
@@ -293,19 +290,23 @@ const Home = ({ history }) => {
       </ContentTitle>
       <ContentImage {...mood.color} />
       <ContentDescription>{mood.description}</ContentDescription>
-      <ActionButtonWrapper>
-        <ActionButton onClick={() => onTakeCare(mood, index, mood.isCare)}>
-          <ActionIcon src={!mood.isCare ? ICON_TAKECARE : ICON_TAKECARE_ACTIVE} />
-          Take care
-        </ActionButton>
-        <VerticalLine />
-        <ActionButton onClick={() => onTalkAbout(mood, index, mood.isTalk)}>
-          <ActionIcon src={!mood.isTalk ? ICON_TALK : ICON_TALK_ACTIVE} />
-          Talk about
-        </ActionButton>
-      </ActionButtonWrapper>
-      <GiveCall src={Expand} />
-      <GiveCallText href={`tel:${mood.tel}`}>Give a call</GiveCallText>
+      {mood.withAction ? (
+        <React.Fragment>
+          <ActionButtonWrapper>
+            <ActionButton onClick={() => onTakeCare(mood, index, mood.isCare)}>
+              <ActionIcon src={!mood.isCare ? ICON_TAKECARE : ICON_TAKECARE_ACTIVE} />
+              Take care
+            </ActionButton>
+            <VerticalLine />
+            <ActionButton onClick={() => onTalkAbout(mood, index, mood.isTalk)}>
+              <ActionIcon src={!mood.isTalk ? ICON_TALK : ICON_TALK_ACTIVE} />
+              Talk about
+            </ActionButton>
+          </ActionButtonWrapper>
+          <GiveCall src={Expand} />
+          <GiveCallText href={`tel:${mood.tel}`}>Give a call</GiveCallText>
+        </React.Fragment>
+      ) : null}
     </ContentItem>
   ))
 

@@ -6,6 +6,7 @@ import ICON_TAKECARE_LINK from '../assets/icon_takecare_link.svg'
 import { ImagePicker, Modal } from 'antd-mobile'
 import firebase from 'firebase'
 import { pathRoutes } from '../routes'
+import ICON_TAKECARE_BTN from '../assets/takecare.svg'
 
 const { alert, prompt } = Modal
 
@@ -37,6 +38,7 @@ const ImageStorage = styled.img`
   max-height: 400px;
   background-size: cover;
   object-fit: cover;
+  position: relative;
 `
 
 const Picker = styled(ImagePicker)`
@@ -63,6 +65,10 @@ const TapButton = styled.div`
   color: gray;
   border: 3px solid gray;
   background: transparent;
+`
+
+const TakeCareButtonImage = styled.img`
+  object-fit: cover;
 `
 
 const takecare = ({ location, history }) => {
@@ -173,7 +179,7 @@ const takecare = ({ location, history }) => {
 
             caresBy = {
               ...caresBy,
-              [userMood.userID]: {
+              [userData.uid]: {
                 uid: userData.uid,
                 createdAt: Date.now(),
                 careUrl: link,
@@ -218,7 +224,7 @@ const takecare = ({ location, history }) => {
 
       caresBy = {
         ...caresBy,
-        [userMood.userID]: {
+        [userData.uid]: {
           uid: userData.uid,
           createdAt: Date.now(),
           careUrl: storageUrl[index].url,
@@ -275,7 +281,7 @@ const takecare = ({ location, history }) => {
 
       caresBy = {
         ...caresBy,
-        [userMood.userID]: {
+        [userData.uid]: {
           uid: userData.uid,
           createdAt: Date.now(),
           careUrl: downloadUrl,
@@ -317,7 +323,7 @@ const takecare = ({ location, history }) => {
       <ImageStorage src={storage.url} />{' '}
       {storage.isTapped ? (
         <Tapping>
-          <TapButton onClick={() => onSendasCare(index)}>Send as care</TapButton>
+          <TakeCareButtonImage src={ICON_TAKECARE_BTN} onClick={() => onSendasCare(index)}/>
         </Tapping>
       ) : null}
     </ImageWrapper>
